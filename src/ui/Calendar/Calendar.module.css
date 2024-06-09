@@ -1,0 +1,200 @@
+/* Calendar */
+
+.calendar {
+    display: block;
+    position: relative;
+    width: 100%;
+    min-width: 800px;
+    font-size: 1em;
+    font-weight: 700;
+    background: var(--surface-container-lowest);
+}
+
+.header {
+    text-transform: uppercase;
+    font-size: 2em;
+    padding: .5em 0;
+    color: var(--on-primary-container);
+    background: var(--primary-container);
+
+    display: flex;
+    justify-content: space-between;
+}
+
+.header__icon {
+    cursor: pointer;
+    transition: transform .25s ease-out;
+    margin: 0 1em;
+}
+
+.header__icon:hover {
+    transform: scale(1.5);
+}
+
+.weekdays {
+    text-transform: uppercase;
+    font-weight: 400;
+    color: var(--on-surface);
+    padding: .75em 0;
+
+    margin: 0;
+    display: flex;
+    width: 100%;
+}
+
+.weekday {
+    flex-grow: 1;
+    max-width: 100%;
+    justify-content: center;
+    text-align: center;
+}
+
+.week {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    width: 100%;
+}
+
+.week__number__label {
+    width: 2em;
+    justify-content: center;
+    text-align: center;
+}
+
+.week__number {
+    width: 2em;
+    padding-top: 1em;
+    justify-content: center;
+    text-align: center;
+}
+
+.cell {
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    text-align: right;
+    background: var(--surface-container);
+
+    border-radius: 5px;
+
+    padding: 0.5em 0.5em 0 0;
+    margin: 0.4em 0.5em;
+    height: 6em;
+    width: calc((100% - 9em) / 7);
+    transition: width .5s, height .5s, margin .5s;
+}
+
+.cell:hover {
+    background: var(--surface-container-high);
+    /*transition: 0.25s ease-out;*/
+}
+
+.cell__selected {
+    padding-top: 1em;
+    border-radius: 0;
+    margin: 0;
+    height: 6.8em;
+    width: calc((100% - 9em) / 7 + 1em);
+    transition: width .5s, height .5s, margin .5s;
+    background: var(--surface-container-high);
+}
+
+.cell__selected::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 1em;
+    background-color: var(--primary);
+}
+
+.airbnb.cell__selected::before {
+    background-color: var(--airbnb);
+}
+
+.selectedNew::after, .selectedOld::after {
+    content: "";
+    position: absolute;
+    top: 0.1em;
+    width: 0.8em;
+    height: 0.8em;
+    border-radius: 50%;
+}
+
+.cell__selected__first.selectedNew::after {
+    left: 0.5em;
+    background-color: var(--primary-container);
+}
+
+.cell__selected__last.selectedNew::after {
+    right: 0.5em;
+    background-color: var(--primary-container);
+}
+
+.cell__selected__first.selectedOld::after {
+    left: 0.5em;
+    background-color: var(--tertiary-fixed-dim);
+}
+
+.cell__selected__last.selectedOld::after {
+    right: 0.5em;
+    background-color: var(--tertiary-fixed-dim);
+}
+
+.cell__selected__only {
+    border-radius: 15px;
+}
+
+.cell__selected__first, .cell__selected__last, .week__number + .cell__selected, .cell__selected:last-of-type {
+    flex-basis: calc((100% - 9em) / 7 + 0.75em);
+}
+
+.cell__selected__first, .week__number + .cell__selected {
+    margin-left: 0.25em;
+}
+
+.cell__selected__last, .cell__selected:last-of-type {
+    margin-right: 0.25em;
+}
+
+.cell__selected__first {
+    border-radius: 15px 0 0 15px;
+}
+
+.cell__selected__last {
+    border-radius: 0 15px 15px 0;
+}
+
+.cell__selected__first.isLongerThanWeek {
+    border-radius: 15px 0 0 0;
+}
+
+.cell__selected__last.isLongerThanWeek {
+    border-radius: 0 0 15px 0;
+}
+
+.booked, .cell__disabled {
+    cursor: default;
+    pointer-events: none;
+}
+
+.cell__disabled {
+    color: var(--surface-container-highest);
+    background: var(--surface-container-low);
+}
+
+.cell__bg {
+    line-height: 1;
+    color: var(--on-surface);
+    opacity: 0;
+    font-size: 2em;
+    transition: .25s ease-out;
+    letter-spacing: -.07em;
+}
+
+.cell:hover .cell__bg, .cell__selected .cell__bg {
+    opacity: 0.05;
+    transition: .05s ease-in;
+}

@@ -1,0 +1,26 @@
+
+.main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 4rem;
+}
+
+.center {
+  position: relative;
+  width: 100%;
+  max-width: var(--max-width);
+}
+
+/* Mobile */
+@media (max-width: 700px) {
+
+  .center::before {
+    transform: none;
+    height: 300px;
+  }
+}
+
+/* Tablet and Smaller Desktop */
+@media (min-width: 701px) and (max-width: 1120px) {
+}

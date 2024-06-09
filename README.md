@@ -1,6 +1,29 @@
-# Create T3 App
+## Getting Started
 
-This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
+First, run the development server:
+
+```bash
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+## Purpose
+
+This project is meant to be a private booking calendar for my family's cabin.
+
+### Planned featues:
+* Private bookings: if you want the cabin for yourself
+* Open bookings: where others can sign up for parts of, or the entirety of the trip. Aimed to make it easier to plan
+  family trips.
+* Fridge status: ability to upload images to let others know what is left at the cabin.
+
 
 ## What's next? How do I make an app with this?
 
@@ -23,7 +46,3 @@ To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the fo
 - [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
 
 You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
-
-## How do I deploy this?
-
-Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
