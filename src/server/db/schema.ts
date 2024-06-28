@@ -3,11 +3,12 @@
 
 import { sql } from "drizzle-orm";
 import {
-  index,
-  pgTableCreator,
-  serial,
-  timestamp,
-  varchar,
+    pgEnum,
+    pgTableCreator,
+    serial,
+    timestamp,
+    date,
+    varchar,
 } from "drizzle-orm/pg-core";
 
 /**
@@ -18,17 +19,23 @@ import {
  */
 export const createTable = pgTableCreator((name) => `hytta-t3_${name}`);
 
-export const posts = createTable(
-  "post",
+export const bookingTypeEnum = pgEnum('booking_type', ['Private', 'Public', 'AirBnB']);
+
+export const bookings = createTable(
+  "booking",
   {
     id: serial("id").primaryKey(),
-    name: varchar("name", { length: 256 }),
+    by: varchar("user", { length: 256 }).notNull(),
     createdAt: timestamp("created_at", { withTimezone: true })
       .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),
-    updatedAt: timestamp("updatedAt", { withTimezone: true }),
+    updatedAt: timestamp("updated_at", { withTimezone: true })
+        .default(sql`CURRENT_TIMESTAMP`)
+        .notNull(),
+    type: bookingTypeEnum("type").notNull(),
+    fromDate: date("from_date").notNull(),
+    toDate: date("to_date").notNull(),
+    description: varchar("description", { length: 256 }),
+    participants: varchar("participants", { length: 1024 }),
   },
-  (example) => ({
-    nameIndex: index("name_idx").on(example.name),
-  })
 );
