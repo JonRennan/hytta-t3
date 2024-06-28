@@ -1,66 +1,102 @@
 import {
-	isSameMonth,
-	isBefore,
-	isSameDay,
-	differenceInCalendarDays,
-	isPast,
-	isWithinInterval,
+  isSameMonth,
+  isBefore,
+  isSameDay,
+  differenceInCalendarDays,
+  isPast,
+  isWithinInterval,
 } from "date-fns";
-import styles from "~/ui/Calendar/Calendar.module.css";
 
-function isDisabled(day: Date, viewDate: Date): boolean {
-	return !isSameMonth(day, viewDate) || isPast(day.setHours(23, 59, 59, 999));
+const exampleReservation = [
+  new Date(2024, 6, 30),
+  new Date(2024, 7, 15, 23, 59, 59, 999),
+];
+
+function isDisabled(day: Date, viewMonth: Date): boolean {
+  return !isSameMonth(day, viewMonth) || isPast(day.setHours(23, 59, 59, 999));
 }
 
-function isSelected(	day: Date,	selectedDateNew: Date,	selectedDateOld: Date): boolean {
-	return (
-		isWithinInterval(day.setHours(0,0,0,0), { start: selectedDateNew.setHours(0,0,0,0), end: selectedDateOld.setHours(0,0,0,0) }) &&
-		Math.abs(differenceInCalendarDays(selectedDateNew, selectedDateOld)) < 60
-	);
+function isSelected(
+  day: Date,
+  selectedDateNew: Date,
+  selectedDateOld: Date,
+): boolean {
+  return (
+    isWithinInterval(day.setHours(0, 0, 0, 0), {
+      start: selectedDateNew.setHours(0, 0, 0, 0),
+      end: selectedDateOld.setHours(0, 0, 0, 0),
+    }) &&
+    Math.abs(differenceInCalendarDays(selectedDateNew, selectedDateOld)) < 60
+  );
 }
 
-function getSelectedStyle(day: Date,	selectedDateNew: Date,	selectedDateOld: Date, isInteractive  = false): string {
-	let selectedStyle: string = styles.cell__selected!;
+function getSelectedStyle(
+  day: Date,
+  selectedDateNew: Date,
+  selectedDateOld: Date,
+): string {
+  let className = "";
 
-	const isNewFirst = isBefore(selectedDateNew, selectedDateOld);
+  const isNewFirst = isBefore(selectedDateNew, selectedDateOld);
 
-	if (isSameDay(selectedDateNew, selectedDateOld)) {
-		selectedStyle += ` ${styles.cell__selected__only}`;
-	} else if (isSameDay(day, selectedDateNew) || isSameDay(day, selectedDateOld)) {
-		if ((isNewFirst && isSameDay(day, selectedDateNew)) || (!isNewFirst && isSameDay(day, selectedDateOld))) {
-			selectedStyle += ` ${styles.cell__selected__first}`;
-		} else {
-			selectedStyle += ` ${styles.cell__selected__last}`;
-		}
-
-		if (isInteractive) {
-			if (isSameDay(day, selectedDateNew)){
-				selectedStyle += ` ${styles.selectedNew}`
-			} else if (isSameDay(day, selectedDateOld)){
-				selectedStyle += ` ${styles.selectedOld}`
-			}
-		}
-	}
-	if (Math.abs(differenceInCalendarDays(selectedDateNew, selectedDateOld)) > 6) {
-		selectedStyle += ` ${styles.isLongerThanWeek}`;
-	}
-	return selectedStyle;
+  if (isSameDay(selectedDateNew, selectedDateOld)) {
+    className = "rounded-md md:rounded-xl";
+  } else if (
+    Math.abs(differenceInCalendarDays(selectedDateNew, selectedDateOld)) > 6
+  ) {
+    if (isSameDay(day, selectedDateNew) || isSameDay(day, selectedDateOld)) {
+      if (
+        (isNewFirst && isSameDay(day, selectedDateNew)) ||
+        (!isNewFirst && isSameDay(day, selectedDateOld))
+      ) {
+        className = "rounded-tl-md md:rounded-tl-xl";
+      } else {
+        className = "rounded-br-md md:rounded-br-xl";
+      }
+    }
+  } else if (
+    isSameDay(day, selectedDateNew) ||
+    isSameDay(day, selectedDateOld)
+  ) {
+    if (
+      (isNewFirst && isSameDay(day, selectedDateNew)) ||
+      (!isNewFirst && isSameDay(day, selectedDateOld))
+    ) {
+      className = "rounded-l-md md:rounded-l-xl";
+    } else {
+      className = "rounded-r-md md:rounded-r-xl";
+    }
+  }
+  return className;
 }
 
-function isBooked(day: Date, booking: Date[]): boolean {
-	return isWithinInterval(day, { start: booking[0]!, end: booking[1]! });
+function isBooked(day: Date): boolean {
+  // TODO: compare day with bookings from db
+  return isWithinInterval(day, {
+    start: exampleReservation[0]!,
+    end: exampleReservation[1]!,
+  });
 }
 
-export function getCellStyles(day: Date, airbnbReservation: Date[], selectedDateNew: Date, selectedDateOld: Date, viewDate: Date): string {
-	let cellStyles = styles.cell!;
+export function getCellStyles(
+  cellDay: Date,
+  selectedDateNew: Date,
+  selectedDateOld: Date,
+  viewMonth: Date,
+): string {
+  let className: string;
 
-	if (isBooked(day, airbnbReservation)) {
-		cellStyles += ` ${styles.airbnb} ${styles.booked} ${getSelectedStyle(day, airbnbReservation[0]!, airbnbReservation[1]!)}`
-	} else if (isSelected(day, selectedDateNew, selectedDateOld)) {
-		cellStyles += ` ${getSelectedStyle(day, selectedDateNew, selectedDateOld, true)}`
-	} else if (isDisabled(day, viewDate)){
-		cellStyles += ` ${styles.cell__disabled}`
-	}
+  if (isBooked(cellDay)) {
+    className = `pointer-events-none bg-airbnb ${getSelectedStyle(cellDay, exampleReservation[0]!, exampleReservation[1]!)}`;
+  } else if (isSelected(cellDay, selectedDateNew, selectedDateOld)) {
+    className = `cursor-pointer bg-surface-container_high ${getSelectedStyle(cellDay, selectedDateNew, selectedDateOld)}`;
+  } else if (isDisabled(cellDay, viewMonth)) {
+    className =
+      "text-surface-container_highest rounded-sm md:rounded-md bg-surface-container_low pointer-events-none m-0.5 md:m-1 lg:m-2";
+  } else {
+    className =
+      "cursor-pointer bg-surface-container rounded-sm md:rounded-md hover:bg-surface-container_high m-0.5 md:m-1 lg:m-2";
+  }
 
-	return cellStyles
+  return className;
 }

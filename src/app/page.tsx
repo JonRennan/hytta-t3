@@ -1,12 +1,9 @@
-import styles from "./page.module.css";
-import Calendar from "~/ui/Calendar/Calendar";
+import { Calendar } from "~/ui/Calendar/Calendar";
 
 export default function Home() {
   return (
-    <main className={styles.main}>
-      <div className={styles.center}>
-        <Calendar />
-      </div>
+    <main className="flex w-full justify-center p-1 sm:p-4 md:px-16">
+      <Calendar />
     </main>
   );
 }

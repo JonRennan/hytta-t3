@@ -8,6 +8,7 @@ import {
 
 import "~/styles/globals.css";
 import { GeistSans } from "geist/font/sans";
+import Link from "next/link";
 
 export const metadata = {
   title: "Hytta",
@@ -17,8 +18,8 @@ export const metadata = {
 
 function TopNav() {
   return (
-    <nav className="navbar">
-      <div> Kalender</div>
+    <nav className="flex w-full justify-around bg-surface-bright py-3">
+      <Link href="/">Kalender</Link>
       <SignedOut>
         <SignInButton />
       </SignedOut>
