@@ -38,7 +38,7 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="no">
-        <body className={GeistSans.className}>
+        <body className={`dark ${GeistSans.className}`}>
           <TopNav />
           {children}
         </body>
