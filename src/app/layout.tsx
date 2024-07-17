@@ -5,6 +5,7 @@ import {
   SignedOut,
   UserButton,
 } from "@clerk/nextjs";
+import { nbNO } from "@clerk/localizations";
 
 import "~/styles/globals.css";
 import { GeistSans } from "geist/font/sans";
@@ -21,7 +22,9 @@ function TopNav() {
     <nav className="flex w-full justify-around bg-surface-bright py-3">
       <Link href="/">Kalender</Link>
       <SignedOut>
-        <SignInButton />
+        <SignInButton mode={"modal"}>
+          <button>Logg inn</button>
+        </SignInButton>
       </SignedOut>
       <SignedIn>
         <UserButton />
@@ -36,7 +39,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <ClerkProvider>
+    <ClerkProvider localization={nbNO}>
       <html lang="no">
         <body className={`dark ${GeistSans.className}`}>
           <TopNav />
