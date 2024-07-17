@@ -115,7 +115,7 @@ export function Calendar() {
             <span className="select-none font-bold md:m-4">
               {formattedDate}
             </span>
-            <span className="left-[-0.1em] top-[-.4em] hidden select-none text-[9.5em] font-extrabold opacity-0 duration-200 ease-in md:absolute lg:group-hover/cell:opacity-5">
+            <span className="absolute left-[-0.15em] top-[-.4em] hidden select-none text-[9.5em] font-extrabold opacity-0 md:block  md:group-hover/cell:opacity-5">
               {formattedDate}
             </span>
           </div>,

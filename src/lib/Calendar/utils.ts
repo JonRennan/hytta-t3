@@ -92,10 +92,10 @@ export function getCellStyles(
     className = `cursor-pointer bg-surface-container_high ${getSelectedStyle(cellDay, selectedDateNew, selectedDateOld)}`;
   } else if (isDisabled(cellDay, viewMonth)) {
     className =
-      "text-surface-container_highest rounded-sm md:rounded-md bg-surface-container_low pointer-events-none m-0.5 md:m-1 lg:m-2";
+      "text-surface-container_highest rounded-sm md:rounded-md bg-surface-container_low pointer-events-none m-0.5 md:m-1";
   } else {
     className =
-      "cursor-pointer bg-surface-container rounded-sm md:rounded-md hover:bg-surface-container_high m-0.5 md:m-1 lg:m-2";
+      "cursor-pointer bg-surface-container rounded-sm md:rounded-md hover:bg-surface-container_high m-0.5 md:m-1";
   }
 
   return className;
