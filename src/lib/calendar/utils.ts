@@ -1,11 +1,12 @@
 import {
-  isSameMonth,
-  isBefore,
-  isSameDay,
   differenceInCalendarDays,
+  isBefore,
   isPast,
+  isSameDay,
+  isSameMonth,
   isWithinInterval,
 } from "date-fns";
+import { cn } from "~/lib/utils";
 
 const exampleReservation = [
   new Date(2024, 6, 30),
@@ -84,19 +85,19 @@ export function getCellStyles(
   selectedDateOld: Date,
   viewMonth: Date,
 ): string {
-  let className: string;
-
   if (isBooked(cellDay)) {
-    className = `pointer-events-none bg-airbnb ${getSelectedStyle(cellDay, exampleReservation[0]!, exampleReservation[1]!)}`;
+    return cn(
+      "pointer-events-none bg-airbnb",
+      getSelectedStyle(cellDay, exampleReservation[0]!, exampleReservation[1]!),
+    );
   } else if (isSelected(cellDay, selectedDateNew, selectedDateOld)) {
-    className = `cursor-pointer bg-surface-container_high ${getSelectedStyle(cellDay, selectedDateNew, selectedDateOld)}`;
+    return cn(
+      "cursor-pointer bg-surface-container_high",
+      getSelectedStyle(cellDay, selectedDateNew, selectedDateOld),
+    );
   } else if (isDisabled(cellDay, viewMonth)) {
-    className =
-      "text-surface-container_highest rounded-sm md:rounded-md bg-surface-container_low pointer-events-none m-0.5 md:m-1";
+    return "text-surface-container_highest rounded-sm md:rounded-md bg-surface-container_low pointer-events-none m-0.5 md:m-1";
   } else {
-    className =
-      "cursor-pointer bg-surface-container rounded-sm md:rounded-md hover:bg-surface-container_high m-0.5 md:m-1";
+    return "cursor-pointer bg-surface-container rounded-sm md:rounded-md hover:bg-surface-container_high m-0.5 md:m-1";
   }
-
-  return className;
 }

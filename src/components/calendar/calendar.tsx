@@ -1,33 +1,36 @@
-"use client";
-import React from "react";
-import { useState } from "react";
 import {
-  format,
   addDays,
-  startOfWeek,
-  endOfWeek,
-  getWeek,
-  startOfMonth,
-  endOfMonth,
   addMonths,
-  subMonths,
+  endOfMonth,
+  format,
+  getWeek,
+  isBefore,
   setDefaultOptions,
+  startOfMonth,
+  startOfWeek,
+  subMonths,
 } from "date-fns";
 import { nb } from "date-fns/locale";
-import { getCellStyles } from "~/lib/Calendar/utils";
 
-const undefinedDate = new Date(0);
+import React, { useState } from "react";
+
+import { getCellStyles } from "~/lib/calendar/utils";
+import { cn } from "~/lib/utils";
+import {
+  formatMonthYear,
+  formatDayLong,
+  formatDayShort,
+  undefinedDate,
+  formatDayNum,
+} from "~/types";
 
 export function Calendar() {
   const [viewDate, setViewDate] = useState<Date>(new Date());
   const [selectedDateNew, setSelectedDateNew] = useState<Date>(undefinedDate);
   const [selectedDateOld, setSelectedDateOld] = useState<Date>(undefinedDate);
+  setDefaultOptions({ locale: nb });
 
-  const renderHeader = () => {
-    setDefaultOptions({ locale: nb });
-
-    const dateFormat = "MMMM yyyy";
-
+  const renderMonthHeader = () => {
     return (
       <div className="flex justify-between bg-primary-container py-2 text-center text-xl font-bold uppercase text-primary-container_on md:text-3xl">
         <div
@@ -36,7 +39,7 @@ export function Calendar() {
         >
           {"<"}-
         </div>
-        <span>{format(viewDate, dateFormat)}</span>
+        <span>{format(viewDate, formatMonthYear)}</span>
         <div
           className="duration-250 mx-5 min-w-max cursor-pointer transition-transform ease-out hover:scale-150"
           onClick={nextMonth}
@@ -47,9 +50,7 @@ export function Calendar() {
     );
   };
 
-  const renderWeek = () => {
-    const dateFormat = "EEEE";
-    const dateFormatShort = "eee";
+  const renderWeekdays = () => {
     const days = [];
 
     const startDate = startOfWeek(viewDate);
@@ -64,10 +65,10 @@ export function Calendar() {
       days.push(
         <div className="text-center text-sm sm:text-base" key={i}>
           <span className="block md:hidden">
-            {format(addDays(startDate, i), dateFormatShort)}
+            {format(addDays(startDate, i), formatDayShort)}
           </span>
           <span className="hidden md:block">
-            {format(addDays(startDate, i), dateFormat)}
+            {format(addDays(startDate, i), formatDayLong)}
           </span>
         </div>,
       );
@@ -80,20 +81,17 @@ export function Calendar() {
     );
   };
 
-  const renderCells = () => {
+  const renderDayCells = () => {
     const monthStart = startOfMonth(viewDate);
-    const monthEnd = endOfMonth(monthStart);
-    const firstDate = startOfWeek(monthStart);
-    const lastDate = endOfWeek(monthEnd);
+    const monthEnd = endOfMonth(viewDate);
 
-    const dateFormat = "d";
     const days = [];
 
-    let day = firstDate;
+    let day = startOfWeek(monthStart);
     let formattedDate = "";
     let weekNumber = 0;
 
-    while (day <= lastDate) {
+    while (day <= monthEnd) {
       weekNumber = getWeek(day);
       days.push(
         <div
@@ -104,11 +102,14 @@ export function Calendar() {
         </div>,
       );
       for (let i = 0; i < 7; i++) {
-        formattedDate = format(day, dateFormat);
+        formattedDate = format(day, formatDayNum);
         const cloneDay = day;
         days.push(
           <div
-            className={`relative flow-root overflow-hidden pt-1 text-center duration-75 ease-in-out md:text-right ${getCellStyles(day, selectedDateNew, selectedDateOld, viewDate)} group/cell`}
+            className={cn(
+              "group/cell relative flow-root overflow-hidden pt-1 text-center duration-75 ease-in-out md:text-right",
+              getCellStyles(day, selectedDateNew, selectedDateOld, viewDate),
+            )}
             key={day.toString()}
             onClick={() => onDateClick(cloneDay)}
           >
@@ -150,9 +151,9 @@ export function Calendar() {
 
   return (
     <div className="w-full max-w-screen-lg bg-surface-container_lowest object-center">
-      {renderHeader()}
-      {renderWeek()}
-      {renderCells()}
+      {renderMonthHeader()}
+      {renderWeekdays()}
+      {renderDayCells()}
     </div>
   );
 }
