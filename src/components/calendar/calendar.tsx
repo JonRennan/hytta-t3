@@ -24,11 +24,39 @@ import {
   formatDayNum,
 } from "~/types";
 
-export function Calendar() {
+interface CalendarProps {
+  setSelectedDates: React.Dispatch<React.SetStateAction<Date[]>>;
+}
+
+export function Calendar({ setSelectedDates }: CalendarProps) {
   const [viewDate, setViewDate] = useState<Date>(new Date());
   const [selectedDateNew, setSelectedDateNew] = useState<Date>(undefinedDate);
   const [selectedDateOld, setSelectedDateOld] = useState<Date>(undefinedDate);
   setDefaultOptions({ locale: nb });
+
+  const onDateClick = (day: Date) => {
+    if (selectedDateNew === undefinedDate) {
+      setSelectedDateNew(day);
+      setSelectedDateOld(day);
+      setSelectedDates([day, day]);
+    } else {
+      if (isBefore(day, selectedDateNew)) {
+        setSelectedDates([day, selectedDateNew]);
+      } else {
+        setSelectedDates([selectedDateNew, day]);
+      }
+      setSelectedDateOld(selectedDateNew);
+      setSelectedDateNew(day);
+    }
+  };
+
+  const nextMonth = () => {
+    setViewDate(addMonths(viewDate, 1));
+  };
+
+  const prevMonth = () => {
+    setViewDate(subMonths(viewDate, 1));
+  };
 
   const renderMonthHeader = () => {
     return (
@@ -129,24 +157,6 @@ export function Calendar() {
         {days}
       </div>
     );
-  };
-
-  const onDateClick = (day: Date) => {
-    if (selectedDateNew === undefinedDate) {
-      setSelectedDateNew(day);
-      setSelectedDateOld(day);
-    } else {
-      setSelectedDateOld(selectedDateNew);
-      setSelectedDateNew(day);
-    }
-  };
-
-  const nextMonth = () => {
-    setViewDate(addMonths(viewDate, 1));
-  };
-
-  const prevMonth = () => {
-    setViewDate(subMonths(viewDate, 1));
   };
 
   return (
