@@ -6,7 +6,7 @@ import {
   UserButton,
 } from "@clerk/nextjs";
 import { nbNO } from "@clerk/localizations";
-
+import { Toaster } from "~/components/ui/sonner";
 import "~/styles/globals.css";
 import { GeistSans } from "geist/font/sans";
 import Link from "next/link";
@@ -44,6 +44,7 @@ export default function RootLayout({
         <body className={`dark ${GeistSans.className}`}>
           <TopNav />
           {children}
+          <Toaster />
         </body>
       </html>
     </ClerkProvider>
