@@ -8,11 +8,6 @@ import {
 } from "date-fns";
 import { cn } from "~/lib/utils";
 
-const exampleReservation = [
-  new Date(2024, 6, 30),
-  new Date(2024, 7, 15, 23, 59, 59, 999),
-];
-
 function isDisabled(day: Date, viewMonth: Date): boolean {
   return !isSameMonth(day, viewMonth) || isPast(day.setHours(23, 59, 59, 999));
 }
@@ -73,10 +68,7 @@ function getSelectedStyle(
 
 function isBooked(day: Date): boolean {
   // TODO: compare day with bookings from db
-  return isWithinInterval(day, {
-    start: exampleReservation[0]!,
-    end: exampleReservation[1]!,
-  });
+  return false;
 }
 
 export function getCellStyles(
@@ -88,7 +80,8 @@ export function getCellStyles(
   if (isBooked(cellDay)) {
     return cn(
       "pointer-events-none bg-airbnb",
-      getSelectedStyle(cellDay, exampleReservation[0]!, exampleReservation[1]!),
+      // getSelectedStyle(cellDay, exampleReservation[0]!, exampleReservation[1]!),
+      "",
     );
   } else if (isSelected(cellDay, selectedDateNew, selectedDateOld)) {
     return cn(
