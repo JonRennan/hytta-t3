@@ -23,24 +23,29 @@ export const bookingTypeEnum = pgEnum("booking_type", [
 
 // Zod
 
-export const createBookingFormSchema = z.object({
-  bookingType: z.enum(bookingTypeEnum.enumValues, {
-    required_error: "En reservasjonstype er nødvendig",
-  }),
-  fromDate: z
-    .date({
-      required_error: "En fra dato er nødvendig.",
-    })
-    .min(today, {
-      message: "En reservasjon må være i fremtiden",
+export const createBookingFormSchema = z
+  .object({
+    bookingType: z.enum(bookingTypeEnum.enumValues, {
+      required_error: "En reservasjonstype er nødvendig",
     }),
-  toDate: z.date({
-    required_error: "En til dato er nødvendig",
-  }),
-  description: z
-    .string()
-    .max(256, {
-      message: "Beskrivelsen kan ikke være lengre enn 256 karakterer.",
-    })
-    .optional(),
-});
+    fromDate: z
+      .date({
+        required_error: "Velg en fra-dato.",
+      })
+      .min(today, {
+        message: "En reservasjon kan ikke være i fortiden",
+      }),
+    toDate: z.date({
+      required_error: "Velg en til-dato.",
+    }),
+    description: z
+      .string()
+      .max(256, {
+        message: "Beskrivelsen kan ikke være lengre enn 256 karakterer.",
+      })
+      .optional(),
+  })
+  .refine((data) => data.fromDate <= data.toDate, {
+    path: ["toDate"],
+    message: "Til-datoen må være lik eller etter fra-datoen.",
+  });
