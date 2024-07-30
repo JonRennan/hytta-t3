@@ -79,7 +79,7 @@ export function getCellStyles(
 ): string {
   if (isBooked(cellDay)) {
     return cn(
-      "pointer-events-none bg-airbnb",
+      "pointer-events-none",
       // getSelectedStyle(cellDay, exampleReservation[0]!, exampleReservation[1]!),
       "",
     );
@@ -88,7 +88,9 @@ export function getCellStyles(
       "cursor-pointer bg-surface-container_high",
       getSelectedStyle(cellDay, selectedDateNew, selectedDateOld),
     );
-  } else if (isDisabled(cellDay, viewMonth)) {
+  } else if (!isSameMonth(cellDay, viewMonth)) {
+    return "cursor-pointer text-surface-container_highest rounded-sm md:rounded-md bg-surface-container_low hover:bg-surface-container m-0.5 md:m-1";
+  } else if (isPast(cellDay.setHours(23, 59, 59, 999))) {
     return "text-surface-container_highest rounded-sm md:rounded-md bg-surface-container_low pointer-events-none m-0.5 md:m-1";
   } else {
     return "cursor-pointer bg-surface-container rounded-sm md:rounded-md hover:bg-surface-container_high m-0.5 md:m-1";

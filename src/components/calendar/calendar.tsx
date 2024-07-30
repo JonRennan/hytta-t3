@@ -4,6 +4,7 @@ import {
   endOfMonth,
   format,
   getWeek,
+  isAfter,
   isBefore,
   setDefaultOptions,
   startOfMonth,
@@ -32,6 +33,9 @@ export function Calendar({ setSelectedDates }: CalendarProps) {
   const [viewDate, setViewDate] = useState<Date>(new Date());
   const [selectedDateNew, setSelectedDateNew] = useState<Date>(undefinedDate);
   const [selectedDateOld, setSelectedDateOld] = useState<Date>(undefinedDate);
+  const monthStart = startOfMonth(viewDate);
+  const monthEnd = endOfMonth(viewDate);
+
   setDefaultOptions({ locale: nb });
 
   const onDateClick = (day: Date) => {
@@ -47,6 +51,11 @@ export function Calendar({ setSelectedDates }: CalendarProps) {
       }
       setSelectedDateOld(selectedDateNew);
       setSelectedDateNew(day);
+    }
+    if (isBefore(day, monthStart)) {
+      prevMonth();
+    } else if (isAfter(day, monthEnd)) {
+      nextMonth();
     }
   };
 
@@ -110,9 +119,6 @@ export function Calendar({ setSelectedDates }: CalendarProps) {
   };
 
   const renderDayCells = () => {
-    const monthStart = startOfMonth(viewDate);
-    const monthEnd = endOfMonth(viewDate);
-
     const days = [];
 
     let day = startOfWeek(monthStart);
