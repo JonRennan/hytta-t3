@@ -80,3 +80,13 @@ export function getCellStyles(
     return "cursor-pointer bg-surface-container rounded-sm md:rounded-md hover:bg-surface-container_high m-0.5 md:m-1";
   }
 }
+
+export function getSelectedSpanStyles(
+  cellDay: Date,
+  selectedDates: Date[],
+): string {
+  if (isSelected(cellDay, selectedDates[0]!, selectedDates[1]!)) {
+    return "bg-primary-base h-2 w-full absolute top-0 left-0";
+  }
+  return "hidden";
+}

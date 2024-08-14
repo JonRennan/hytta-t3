@@ -15,7 +15,7 @@ import { nb } from "date-fns/locale";
 
 import React, { useState } from "react";
 
-import { getCellStyles } from "~/lib/calendar/utils";
+import { getCellStyles, getSelectedSpanStyles } from "~/lib/calendar/utils";
 import { cn } from "~/lib/utils";
 import {
   formatMonthYear,
@@ -151,6 +151,9 @@ export function Calendar({
             key={day.toString()}
             onClick={() => onDateClick(cloneDay)}
           >
+            <span className={getSelectedSpanStyles(day, orderedSelectedDates)}>
+              {" "}
+            </span>
             <span className="select-none font-bold md:m-4">
               {formattedDate}
             </span>
