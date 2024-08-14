@@ -1,19 +1,36 @@
 import CalendarWFormModal from "~/components/calendar/calendar-w-form-modal";
-import { getBookings } from "~/server/queries";
+import { Separator } from "~/components/ui/separator";
+import { bookingTypeEnumToString } from "~/lib/calendar/utils";
+import { getFutureBookings } from "~/server/queries";
 
 export const dynamic = "force-dynamic";
 
 async function Bookings() {
-  const bookings = await getBookings();
+  const bookings = await getFutureBookings();
   return (
-    <div className="mx-auto w-full max-w-screen-lg">
-      {bookings.map((booking) => (
-        <div key={booking.id}>
-          {booking.type}: {booking.fromDate} - {booking.toDate} <br />
-          {booking.description ? booking.description : <br />}
-          <br />
-        </div>
-      ))}
+    <div className="mx-auto mt-8 w-full max-w-screen-lg rounded-md bg-surface-container p-6">
+      <h2 className="pb-4 text-center text-3xl text-primary-base">
+        Kommende reservasjoner
+      </h2>
+      <div className="flex flex-col gap-4 ">
+        {bookings.map((booking) => (
+          <div
+            key={booking.id}
+            className="flex min-h-12 flex-wrap content-center gap-2 rounded-md bg-surface-container_high p-2"
+          >
+            <div>{bookingTypeEnumToString(booking.type)}</div>
+            <Separator
+              orientation="vertical"
+              className="h-5.5 w-[1px] bg-surface-on"
+            />
+            <div>
+              {booking.fromDate} - {booking.toDate}
+            </div>
+            <Separator className="bg-surface-on" />
+            <div>{booking.description}</div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

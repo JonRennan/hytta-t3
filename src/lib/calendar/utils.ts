@@ -7,6 +7,17 @@ import {
 } from "date-fns";
 import { cn } from "~/lib/utils";
 
+export function bookingTypeEnumToString(bookingTypeValue: string): string {
+  if (bookingTypeValue === "Private") {
+    return "Privat";
+  } else if (bookingTypeValue === "Public") {
+    return "Åpen";
+  } else if (bookingTypeValue === "AirBnB") {
+    return "AirBnB";
+  }
+  return "Udefinert reservasjonstype";
+}
+
 function isDisabled(day: Date, viewMonth: Date): boolean {
   return !isSameMonth(day, viewMonth) || isPast(day.setHours(23, 59, 59, 999));
 }
