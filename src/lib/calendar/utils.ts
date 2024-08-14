@@ -1,6 +1,5 @@
 import {
   differenceInCalendarDays,
-  isBefore,
   isPast,
   isSameDay,
   isSameMonth,
@@ -14,51 +13,34 @@ function isDisabled(day: Date, viewMonth: Date): boolean {
 
 function isSelected(
   day: Date,
-  selectedDateNew: Date,
-  selectedDateOld: Date,
+  selectedDateFirst: Date,
+  selectedDateLast: Date,
 ): boolean {
   return (
     isWithinInterval(day.setHours(0, 0, 0, 0), {
-      start: selectedDateNew.setHours(0, 0, 0, 0),
-      end: selectedDateOld.setHours(0, 0, 0, 0),
-    }) &&
-    Math.abs(differenceInCalendarDays(selectedDateNew, selectedDateOld)) < 60
+      start: selectedDateFirst.setHours(0, 0, 0, 0),
+      end: selectedDateLast.setHours(0, 0, 0, 0),
+    }) && differenceInCalendarDays(selectedDateLast, selectedDateFirst) < 60
   );
 }
 
 function getSelectedStyle(
   day: Date,
-  selectedDateNew: Date,
-  selectedDateOld: Date,
+  selectedDateFirst: Date,
+  selectedDateLast: Date,
 ): string {
   let className = "";
-
-  const isNewFirst = isBefore(selectedDateNew, selectedDateOld);
-
-  if (isSameDay(selectedDateNew, selectedDateOld)) {
+  if (isSameDay(selectedDateFirst, selectedDateLast)) {
     className = "rounded-md md:rounded-xl";
-  } else if (
-    Math.abs(differenceInCalendarDays(selectedDateNew, selectedDateOld)) > 6
-  ) {
-    if (isSameDay(day, selectedDateNew) || isSameDay(day, selectedDateOld)) {
-      if (
-        (isNewFirst && isSameDay(day, selectedDateNew)) ||
-        (!isNewFirst && isSameDay(day, selectedDateOld))
-      ) {
-        className = "rounded-tl-md md:rounded-tl-xl";
-      } else {
-        className = "rounded-br-md md:rounded-br-xl";
-      }
-    }
-  } else if (
-    isSameDay(day, selectedDateNew) ||
-    isSameDay(day, selectedDateOld)
-  ) {
-    if (
-      (isNewFirst && isSameDay(day, selectedDateNew)) ||
-      (!isNewFirst && isSameDay(day, selectedDateOld))
-    ) {
+  } else if (isSameDay(day, selectedDateFirst)) {
+    if (differenceInCalendarDays(selectedDateLast, selectedDateFirst) > 6) {
+      className = "rounded-tl-md md:rounded-tl-xl";
+    } else {
       className = "rounded-l-md md:rounded-l-xl";
+    }
+  } else if (isSameDay(day, selectedDateLast)) {
+    if (differenceInCalendarDays(selectedDateLast, selectedDateFirst) > 6) {
+      className = "rounded-br-md md:rounded-br-xl";
     } else {
       className = "rounded-r-md md:rounded-r-xl";
     }
@@ -73,8 +55,7 @@ function isBooked(day: Date): boolean {
 
 export function getCellStyles(
   cellDay: Date,
-  selectedDateNew: Date,
-  selectedDateOld: Date,
+  selectedDates: Date[],
   viewMonth: Date,
 ): string {
   if (isBooked(cellDay)) {
@@ -83,12 +64,15 @@ export function getCellStyles(
       // getSelectedStyle(cellDay, exampleReservation[0]!, exampleReservation[1]!),
       "",
     );
-  } else if (isSelected(cellDay, selectedDateNew, selectedDateOld)) {
+  } else if (isSelected(cellDay, selectedDates[0]!, selectedDates[1]!)) {
     return cn(
       "cursor-pointer bg-surface-container_high",
-      getSelectedStyle(cellDay, selectedDateNew, selectedDateOld),
+      getSelectedStyle(cellDay, selectedDates[0]!, selectedDates[1]!),
     );
-  } else if (!isSameMonth(cellDay, viewMonth)) {
+  } else if (
+    !isSameMonth(cellDay, viewMonth) &&
+    !isPast(cellDay.setHours(23, 59, 59, 999))
+  ) {
     return "cursor-pointer text-surface-container_highest rounded-sm md:rounded-md bg-surface-container_low hover:bg-surface-container m-0.5 md:m-1";
   } else if (isPast(cellDay.setHours(23, 59, 59, 999))) {
     return "text-surface-container_highest rounded-sm md:rounded-md bg-surface-container_low pointer-events-none m-0.5 md:m-1";

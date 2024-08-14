@@ -23,7 +23,10 @@ export default function CalendarWFormModal() {
   const [open, setOpen] = useState<boolean>(false);
   return (
     <div className="flex w-full flex-col items-center gap-4">
-      <Calendar setSelectedDates={setSelectedDates} />
+      <Calendar
+        setOrderedSelectedDates={setSelectedDates}
+        orderedSelectedDates={selectedDates}
+      />
       <div>
         <SignedOut>
           <SignInButton mode={"modal"}>

@@ -26,10 +26,14 @@ import {
 } from "~/types";
 
 interface CalendarProps {
-  setSelectedDates: React.Dispatch<React.SetStateAction<Date[]>>;
+  setOrderedSelectedDates: React.Dispatch<React.SetStateAction<Date[]>>;
+  orderedSelectedDates: Date[];
 }
 
-export function Calendar({ setSelectedDates }: CalendarProps) {
+export function Calendar({
+  setOrderedSelectedDates,
+  orderedSelectedDates,
+}: CalendarProps) {
   const [viewDate, setViewDate] = useState<Date>(new Date());
   const [selectedDateNew, setSelectedDateNew] = useState<Date>(undefinedDate);
   const [selectedDateOld, setSelectedDateOld] = useState<Date>(undefinedDate);
@@ -42,12 +46,12 @@ export function Calendar({ setSelectedDates }: CalendarProps) {
     if (selectedDateNew === undefinedDate) {
       setSelectedDateNew(day);
       setSelectedDateOld(day);
-      setSelectedDates([day, day]);
+      setOrderedSelectedDates([day, day]);
     } else {
       if (isBefore(day, selectedDateNew)) {
-        setSelectedDates([day, selectedDateNew]);
+        setOrderedSelectedDates([day, selectedDateNew]);
       } else {
-        setSelectedDates([selectedDateNew, day]);
+        setOrderedSelectedDates([selectedDateNew, day]);
       }
       setSelectedDateOld(selectedDateNew);
       setSelectedDateNew(day);
@@ -142,7 +146,7 @@ export function Calendar({ setSelectedDates }: CalendarProps) {
           <div
             className={cn(
               "group/cell relative flow-root overflow-hidden pt-1 text-center duration-75 ease-in-out md:text-right",
-              getCellStyles(day, selectedDateNew, selectedDateOld, viewDate),
+              getCellStyles(day, orderedSelectedDates, viewDate),
             )}
             key={day.toString()}
             onClick={() => onDateClick(cloneDay)}
