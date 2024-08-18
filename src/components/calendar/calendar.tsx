@@ -35,26 +35,24 @@ export function Calendar({
   orderedSelectedDates,
 }: CalendarProps) {
   const [viewDate, setViewDate] = useState<Date>(new Date());
-  const [selectedDateNew, setSelectedDateNew] = useState<Date>(undefinedDate);
-  const [selectedDateOld, setSelectedDateOld] = useState<Date>(undefinedDate);
+  const [previousSelectedDate, setPreviousSelectedDate] =
+    useState<Date>(undefinedDate);
   const monthStart = startOfMonth(viewDate);
   const monthEnd = endOfMonth(viewDate);
 
   setDefaultOptions({ locale: nb });
 
   const onDateClick = (day: Date) => {
-    if (selectedDateNew === undefinedDate) {
-      setSelectedDateNew(day);
-      setSelectedDateOld(day);
+    if (previousSelectedDate === undefinedDate) {
+      setPreviousSelectedDate(day);
       setOrderedSelectedDates([day, day]);
     } else {
-      if (isBefore(day, selectedDateNew)) {
-        setOrderedSelectedDates([day, selectedDateNew]);
+      if (isBefore(day, previousSelectedDate)) {
+        setOrderedSelectedDates([day, previousSelectedDate]);
       } else {
-        setOrderedSelectedDates([selectedDateNew, day]);
+        setOrderedSelectedDates([previousSelectedDate, day]);
       }
-      setSelectedDateOld(selectedDateNew);
-      setSelectedDateNew(day);
+      setPreviousSelectedDate(day);
     }
     if (isBefore(day, monthStart)) {
       prevMonth();
