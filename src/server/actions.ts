@@ -2,6 +2,7 @@
 
 import { auth, clerkClient } from "@clerk/nextjs/server";
 import { addDays } from "date-fns";
+import { AuthenticationError, PermissionError } from "~/errors";
 import { db } from "~/server/db";
 import { bookings } from "~/server/db/schema";
 
@@ -12,12 +13,12 @@ export async function createBooking(
   description?: string,
 ) {
   const user = auth();
-  if (!user.userId) throw new Error("Unauthorized");
+  if (!user.userId) throw AuthenticationError("AuthenticationError");
 
   const fullUserData = await clerkClient.users.getUser(user.userId);
 
   if (fullUserData?.privateMetadata?.["can-book"] !== true)
-    throw new Error("User Does Not Have Booking Permissions");
+    throw PermissionError("PermissionError");
 
   await db.insert(bookings).values({
     byId: user.userId,

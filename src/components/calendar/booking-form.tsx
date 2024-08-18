@@ -37,6 +37,7 @@ import {
 import { ShadCalendar } from "~/components/ui/shad-calendar";
 import { Spinner } from "~/components/ui/spinner";
 import { Textarea } from "~/components/ui/textarea";
+import { isAuthenticationError, isPermissionError } from "~/errors";
 
 import { cn } from "~/lib/utils";
 import { createBooking } from "~/server/actions";
@@ -106,7 +107,17 @@ export function BookingForm({
     } catch (e) {
       console.error(e);
       toast.dismiss("creating-booking");
-      toast.error("Noe gikk galt i opprettingen av reservasjonen.");
+
+      if (e instanceof Error && isAuthenticationError(e)) {
+        toast.error("Du må være pålogget for å reservere hytta.");
+      } else if (e instanceof Error && isPermissionError(e)) {
+        toast.error(
+          "Du mangler tillatelse til å reservere hytta. Kontakt Jon hvis du mener det er feil.",
+        );
+      } else {
+        toast.error("Noe gikk galt i opprettingen av reservasjonen.");
+      }
+
       if (inDialog && setOpen) {
         setOpen(false);
       }

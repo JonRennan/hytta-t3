@@ -30,7 +30,7 @@ export default function CalendarWFormModal() {
       <div>
         <SignedOut>
           <SignInButton mode={"modal"}>
-            <Button variant={"outline"}>Reserver</Button>
+            <Button variant={"outline"}>Reserver hytta</Button>
           </SignInButton>
         </SignedOut>
         <SignedIn>
