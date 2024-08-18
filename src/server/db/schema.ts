@@ -21,7 +21,8 @@ export const createTable = pgTableCreator((name) => `hytta-t3_${name}`);
 
 export const bookings = createTable("booking", {
   id: serial("id").primaryKey(),
-  by: varchar("user", { length: 256 }).notNull(),
+  byId: varchar("user_id", { length: 256 }).notNull(),
+  byName: varchar("user_name", { length: 256 }),
   createdAt: timestamp("created_at", { withTimezone: true })
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),

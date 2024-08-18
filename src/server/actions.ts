@@ -12,7 +12,7 @@ export async function createBooking(
   description?: string,
 ) {
   await db.insert(bookings).values({
-    by: userId,
+    byId: userId,
     type: bookingType,
     fromDate: addDays(fromDate, 1), // Fixes offset due to timezones on server
     toDate: addDays(toDate, 1), // Fixes offset due to timezones on server
