@@ -1,5 +1,6 @@
 "use server";
 
+import { addDays } from "date-fns";
 import { db } from "~/server/db";
 import { bookings } from "~/server/db/schema";
 
@@ -13,8 +14,8 @@ export async function createBooking(
   await db.insert(bookings).values({
     by: userId,
     type: bookingType,
-    fromDate: fromDate,
-    toDate: toDate,
+    fromDate: addDays(fromDate, 1), // Fixes offset due to timezones on server
+    toDate: addDays(toDate, 1), // Fixes offset due to timezones on server
     description: description,
   });
 }
