@@ -92,7 +92,6 @@ export function BookingForm({
 
     try {
       await createBooking(
-        userId!,
         values.bookingType,
         values.fromDate,
         values.toDate,
@@ -108,6 +107,9 @@ export function BookingForm({
       console.error(e);
       toast.dismiss("creating-booking");
       toast.error("Noe gikk galt i opprettingen av reservasjonen.");
+      if (inDialog && setOpen) {
+        setOpen(false);
+      }
     }
   }
 
