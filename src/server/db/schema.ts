@@ -23,12 +23,12 @@ export const bookings = createTable("booking", {
   id: serial("id").primaryKey(),
   byId: varchar("user_id", { length: 256 }).notNull(),
   byName: varchar("user_name", { length: 256 }),
-  createdAt: timestamp("created_at", { withTimezone: true })
-    .default(sql`CURRENT_TIMESTAMP`)
-    .notNull(),
-  updatedAt: timestamp("updated_at", { withTimezone: true })
-    .default(sql`CURRENT_TIMESTAMP`)
-    .notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true }).default(
+    sql`CURRENT_TIMESTAMP`,
+  ),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).default(
+    sql`CURRENT_TIMESTAMP`,
+  ),
   type: bookingTypeEnum("type").notNull(),
   fromDate: date("from_date").notNull(),
   toDate: date("to_date").notNull(),
