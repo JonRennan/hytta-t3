@@ -37,7 +37,7 @@ import {
 import { ShadCalendar } from "~/components/ui/shad-calendar";
 import { Spinner } from "~/components/ui/spinner";
 import { Textarea } from "~/components/ui/textarea";
-import { isAuthenticationError, isPermissionError } from "~/errors";
+import { AUTHENTICATION_ERROR, PERMISSION_ERROR, SUCCESS } from "~/errors";
 
 import { cn } from "~/lib/utils";
 import { createBooking } from "~/server/actions";
@@ -92,35 +92,31 @@ export function BookingForm({
     );
 
     try {
-      await createBooking(
+      let res = await createBooking(
         values.bookingType,
         values.fromDate,
         values.toDate,
         values.description,
       );
       toast.dismiss("creating-booking");
-      toast.success("Reservasjonen ble laget!");
-      if (inDialog && setOpen) {
-        setOpen(false);
-      }
-      router.refresh();
-    } catch (e) {
-      console.error(e);
-      toast.dismiss("creating-booking");
-
-      if (e instanceof Error && isAuthenticationError(e)) {
+      if (res === SUCCESS) {
+        toast.success("Reservasjonen ble laget!");
+      } else if (res === AUTHENTICATION_ERROR) {
         toast.error("Du må være pålogget for å reservere hytta.");
-      } else if (e instanceof Error && isPermissionError(e)) {
+      } else if (res === PERMISSION_ERROR) {
         toast.error(
           "Du mangler tillatelse til å reservere hytta. Kontakt Jon hvis du mener det er feil.",
         );
       } else {
         toast.error("Noe gikk galt i opprettingen av reservasjonen.");
       }
-
       if (inDialog && setOpen) {
         setOpen(false);
       }
+      router.refresh();
+    } catch (e) {
+      toast.dismiss("creating-booking");
+      toast.error("Noe gikk galt i opprettingen av reservasjonen.");
     }
   }
 

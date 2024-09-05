@@ -27,3 +27,7 @@ export function PermissionError(msg: string) {
 export function isPermissionError(error: Error): error is AuthenticationError {
   return error.message === "PermissionError"; // Have to compare message as error.name is not persistent from server to client
 }
+
+export const SUCCESS = "success";
+export const PERMISSION_ERROR = "permission_error";
+export const AUTHENTICATION_ERROR = "authentication_error";
