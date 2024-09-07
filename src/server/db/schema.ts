@@ -29,7 +29,7 @@ export const bookings = createTable("booking", {
   updatedAt: timestamp("updated_at", { withTimezone: true }).default(
     sql`CURRENT_TIMESTAMP`,
   ),
-  type: bookingTypeEnum("type").notNull(),
+  bookingType: bookingTypeEnum("type").notNull(),
   fromDate: date("from_date").notNull(),
   toDate: date("to_date").notNull(),
   description: varchar("description", { length: 256 }),
