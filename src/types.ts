@@ -49,3 +49,42 @@ export const createBookingFormSchema = z
     path: ["toDate"],
     message: "Til-datoen må være lik eller etter fra-datoen.",
   });
+
+// Types
+
+export class Booking {
+  id: number;
+  byId: string;
+  byName: string | null;
+  createdAt: Date | null;
+  updatedAt: Date | null;
+  bookingType: "Private" | "Public" | "AirBnB";
+  fromDate: string;
+  toDate: string;
+  description: string | null;
+  participants: string | null;
+
+  constructor(
+    id: number,
+    byId: string,
+    byName: string | null,
+    createdAt: Date | null,
+    updatedAt: Date | null,
+    bookingType: "Private" | "Public" | "AirBnB",
+    fromDate: string,
+    toDate: string,
+    description: string | null,
+    participants: string | null,
+  ) {
+    this.id = id;
+    this.byId = byId;
+    this.byName = byName;
+    this.createdAt = createdAt;
+    this.updatedAt = updatedAt;
+    this.bookingType = bookingType;
+    this.fromDate = fromDate;
+    this.toDate = toDate;
+    this.description = description;
+    this.participants = participants;
+  }
+}
