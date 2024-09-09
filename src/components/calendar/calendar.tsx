@@ -15,7 +15,11 @@ import { nb } from "date-fns/locale";
 
 import React, { useState } from "react";
 
-import { getCellStyles, getSelectedSpanStyles } from "~/lib/calendar/utils";
+import {
+  getCellStyles,
+  getDayBooking,
+  getSelectedSpanStyles,
+} from "~/lib/calendar/utils";
 import { cn } from "~/lib/utils";
 import {
   formatMonthYear,
@@ -23,16 +27,19 @@ import {
   formatDayShort,
   undefinedDate,
   formatDayNum,
+  Booking,
 } from "~/types";
 
 interface CalendarProps {
   setOrderedSelectedDates: React.Dispatch<React.SetStateAction<Date[]>>;
   orderedSelectedDates: Date[];
+  bookings: Booking[];
 }
 
 export function Calendar({
   setOrderedSelectedDates,
   orderedSelectedDates,
+  bookings,
 }: CalendarProps) {
   const [viewDate, setViewDate] = useState<Date>(new Date());
   const [previousSelectedDate, setPreviousSelectedDate] =
@@ -140,22 +147,36 @@ export function Calendar({
       for (let i = 0; i < 7; i++) {
         formattedDate = format(day, formatDayNum);
         const cloneDay = day;
+        const [dayIsBooked, dayBooking] = getDayBooking(day, bookings);
         days.push(
           <div
             className={cn(
               "group/cell relative flow-root overflow-hidden pt-1 text-center duration-75 ease-in-out md:text-right",
-              getCellStyles(day, orderedSelectedDates, viewDate),
+              getCellStyles(
+                day,
+                orderedSelectedDates,
+                viewDate,
+                dayIsBooked,
+                dayBooking,
+              ),
             )}
             key={day.toString()}
             onClick={() => onDateClick(cloneDay)}
           >
-            <span className={getSelectedSpanStyles(day, orderedSelectedDates)}>
+            <span
+              className={getSelectedSpanStyles(
+                day,
+                orderedSelectedDates,
+                dayIsBooked,
+                dayBooking,
+              )}
+            >
               {" "}
             </span>
             <span className="select-none font-bold md:m-4">
               {formattedDate}
             </span>
-            <span className="absolute left-[-0.15em] top-[-.4em] hidden select-none text-[9.5em] font-extrabold opacity-0 md:block  md:group-hover/cell:opacity-5">
+            <span className="absolute left-[-0.15em] top-[-.4em] hidden select-none text-[9.5em] font-extrabold opacity-0 md:block md:group-hover/cell:opacity-5">
               {formattedDate}
             </span>
           </div>,

@@ -4,8 +4,10 @@ import {
   isSameDay,
   isSameMonth,
   isWithinInterval,
+  isBefore,
 } from "date-fns";
 import { cn } from "~/lib/utils";
+import { Booking } from "~/types";
 
 export function bookingTypeEnumToString(bookingTypeValue: string): string {
   if (bookingTypeValue === "Private") {
@@ -37,8 +39,8 @@ function isSelected(
 
 function getSelectedStyle(
   day: Date,
-  selectedDateFirst: Date,
-  selectedDateLast: Date,
+  selectedDateFirst: Date | string,
+  selectedDateLast: Date | string,
 ): string {
   let className = "";
   if (isSameDay(selectedDateFirst, selectedDateLast)) {
@@ -59,20 +61,38 @@ function getSelectedStyle(
   return className;
 }
 
-function isBooked(day: Date): boolean {
-  // TODO: compare day with bookings from db
-  return false;
+export function getDayBooking(
+  day: Date,
+  bookings: Booking[],
+): [boolean, Booking | null] {
+  let booked = false;
+  let returnBooking: Booking | null = null;
+  bookings.forEach((booking) => {
+    if (isBefore(booking.fromDate, day) && isBefore(day, booking.toDate)) {
+      booked = true;
+      returnBooking = booking;
+    } else if (
+      isSameDay(booking.toDate, day) ||
+      isSameDay(booking.fromDate, day)
+    ) {
+      booked = true;
+      returnBooking = booking;
+    }
+  });
+  return [booked, returnBooking];
 }
 
 export function getCellStyles(
   cellDay: Date,
   selectedDates: Date[],
   viewMonth: Date,
+  dayIsBooked: boolean,
+  dayBooking: Booking | null,
 ): string {
-  if (isBooked(cellDay)) {
+  if (dayIsBooked) {
     return cn(
-      "pointer-events-none",
-      // getSelectedStyle(cellDay, exampleReservation[0]!, exampleReservation[1]!),
+      "pointer-events-none bg-surface-container",
+      getSelectedStyle(cellDay, dayBooking!.fromDate, dayBooking!.toDate),
       "",
     );
   } else if (isSelected(cellDay, selectedDates[0]!, selectedDates[1]!)) {
@@ -95,8 +115,15 @@ export function getCellStyles(
 export function getSelectedSpanStyles(
   cellDay: Date,
   selectedDates: Date[],
+  dayIsBooked: boolean,
+  dayBooking: Booking | null,
 ): string {
-  if (isSelected(cellDay, selectedDates[0]!, selectedDates[1]!)) {
+  if (dayIsBooked) {
+    if (dayBooking!.bookingType === "AirBnB") {
+      return "bg-airbnb h-2 w-full absolute top-0 left-0";
+    }
+    return "bg-tertiary-base h-2 w-full absolute top-0 left-0";
+  } else if (isSelected(cellDay, selectedDates[0]!, selectedDates[1]!)) {
     return "bg-primary-base h-2 w-full absolute top-0 left-0";
   }
   return "hidden";

@@ -47,7 +47,7 @@ export default async function Home() {
   const bookings: Booking[] = await getBookings();
   return (
     <main className="flex w-full flex-col p-1 sm:p-4 md:px-8">
-      <CalendarWFormModal />
+      <CalendarWFormModal bookings={bookings} />
       <FutureBookingsList bookings={bookings} />
     </main>
   );

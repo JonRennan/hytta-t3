@@ -13,9 +13,15 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "~/components/ui/dialog";
-import { undefinedDate } from "~/types";
+import { Booking, undefinedDate } from "~/types";
 
-export default function CalendarWFormModal() {
+interface CalendarWFormModalProps {
+  bookings: Booking[];
+}
+
+export default function CalendarWFormModal({
+  bookings,
+}: CalendarWFormModalProps) {
   const [selectedDates, setSelectedDates] = useState<Date[]>([
     undefinedDate,
     undefinedDate,
@@ -26,6 +32,7 @@ export default function CalendarWFormModal() {
       <Calendar
         setOrderedSelectedDates={setSelectedDates}
         orderedSelectedDates={selectedDates}
+        bookings={bookings}
       />
       <div>
         <SignedOut>
