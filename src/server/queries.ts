@@ -1,7 +1,12 @@
 import "server-only";
+import { eq } from "drizzle-orm";
 import { db } from "~/server/db";
+import { bookings } from "~/server/db/schema";
+import { today } from "~/types";
 
-const today = new Date();
+export async function getBookingById(bookingId: number) {
+  return db.select().from(bookings).where(eq(bookings.id, bookingId));
+}
 
 export async function getBookings() {
   return db.query.bookings.findMany({
