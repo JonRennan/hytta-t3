@@ -24,7 +24,7 @@ export const bookingTypeEnum = pgEnum("booking_type", [
 
 // Zod
 
-export const createBookingFormSchema = z
+export const bookingFormSchema = z
   .object({
     bookingType: z.enum(bookingTypeEnum.enumValues, {
       required_error: "En reservasjonstype er nødvendig",

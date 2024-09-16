@@ -7,7 +7,7 @@ This project is meant to be a private booking calendar for my family's cabin.
   - [ ] Block bookings from overlapping
   - [ ] Display info about the booking on the calendar
   - [ ] Custom booking color per user
-  - [ ] Edit bookings
+  - [x] Edit bookings
   - [x] Delete bookings
   
 - [ ] Open bookings: where others can sign up for parts of, or the entirety of the trip. Aimed to make it easier to plan

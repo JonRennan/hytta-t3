@@ -31,4 +31,4 @@ export function isPermissionError(error: Error): error is AuthenticationError {
 export const SUCCESS = "success";
 export const PERMISSION_ERROR = "permission_error";
 export const AUTHENTICATION_ERROR = "authentication_error";
-export const NOT_FOUND = "NOT_FOUND";
+export const NOT_FOUND = "not_found";

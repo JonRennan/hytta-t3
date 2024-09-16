@@ -37,15 +37,23 @@ import {
 import { ShadCalendar } from "~/components/ui/shad-calendar";
 import { Spinner } from "~/components/ui/spinner";
 import { Textarea } from "~/components/ui/textarea";
-import { AUTHENTICATION_ERROR, PERMISSION_ERROR, SUCCESS } from "~/errors";
+import {
+  AUTHENTICATION_ERROR,
+  NOT_FOUND,
+  PERMISSION_ERROR,
+  SUCCESS,
+} from "~/errors";
 
 import { cn } from "~/lib/utils";
-import { createBooking } from "~/server/actions";
-import { createBookingFormSchema, formatDateString, today } from "~/types";
+import { createBooking, editBooking } from "~/server/actions";
+import { bookingFormSchema, formatDateString, today } from "~/types";
 
 interface BookingFormProps {
   selectedDateFrom?: Date;
   selectedDateTo?: Date;
+  bookingId?: number;
+  prevBookingType?: "Private" | "Public" | "AirBnB";
+  prevDescription?: string;
   inDialog: boolean;
   setOpen?: React.Dispatch<React.SetStateAction<boolean>>;
 }
@@ -53,18 +61,22 @@ interface BookingFormProps {
 export function BookingForm({
   selectedDateFrom,
   selectedDateTo,
+  bookingId,
+  prevBookingType,
+  prevDescription,
   inDialog = false,
   setOpen,
 }: BookingFormProps) {
   setDefaultOptions({ locale: nb });
   const router = useRouter();
 
-  const form = useForm<z.infer<typeof createBookingFormSchema>>({
-    resolver: zodResolver(createBookingFormSchema),
+  const form = useForm<z.infer<typeof bookingFormSchema>>({
+    resolver: zodResolver(bookingFormSchema),
     defaultValues: {
-      bookingType: "Private",
+      bookingType: prevBookingType ? prevBookingType : "Private",
       fromDate: selectedDateFrom,
       toDate: selectedDateTo,
+      description: prevDescription,
     },
   });
 
@@ -80,7 +92,9 @@ export function BookingForm({
     );
   }
 
-  async function onSubmit(values: z.infer<typeof createBookingFormSchema>) {
+  async function submitCreateBooking(
+    values: z.infer<typeof bookingFormSchema>,
+  ) {
     toast(
       <div className="flex items-center gap-2 text-white">
         <Spinner /> <span className="text-lg">Lager reservasjon...</span>
@@ -117,6 +131,55 @@ export function BookingForm({
     } catch (e) {
       toast.dismiss("creating-booking");
       toast.error("Noe gikk galt i opprettingen av reservasjonen.");
+    }
+  }
+
+  async function submitEditBooking(values: z.infer<typeof bookingFormSchema>) {
+    toast(
+      <div className="flex items-center gap-2 text-white">
+        <Spinner /> <span className="text-lg">Endrer reservasjon...</span>
+      </div>,
+      {
+        duration: 100000,
+        id: "editing-booking",
+      },
+    );
+
+    try {
+      let res = await editBooking(
+        values.bookingType,
+        values.fromDate,
+        values.toDate,
+        bookingId,
+        values.description,
+      );
+      toast.dismiss("editing-booking");
+      if (res === SUCCESS) {
+        toast.success("Reservasjonen ble endret!");
+      } else if (res === AUTHENTICATION_ERROR) {
+        toast.error("Du må være pålogget for å endre en reservasjon.");
+      } else if (res === PERMISSION_ERROR) {
+        toast.error("Du kan bare endre dine egne reservasjoner.");
+      } else if (res === NOT_FOUND) {
+        toast.error("Fant ikke reservasjonen du prøvde å endre.");
+      } else {
+        toast.error("Noe gikk galt ved endringen av reservasjonen.");
+      }
+      if (inDialog && setOpen) {
+        setOpen(false);
+      }
+      router.refresh();
+    } catch (e) {
+      toast.dismiss("editing-booking");
+      toast.error("Noe gikk galt ved endringen av reservasjonen.");
+    }
+  }
+
+  async function onSubmit(values: z.infer<typeof bookingFormSchema>) {
+    if (bookingId && prevBookingType) {
+      await submitEditBooking(values);
+    } else {
+      await submitCreateBooking(values);
     }
   }
 
