@@ -1,7 +1,6 @@
 "use server";
 
 import { auth, clerkClient } from "@clerk/nextjs/server";
-import { addDays } from "date-fns";
 import { eq, sql } from "drizzle-orm";
 import {
   AUTHENTICATION_ERROR,
@@ -15,8 +14,8 @@ import { getBookingById } from "~/server/queries";
 
 export async function createBooking(
   bookingType: "Private" | "Public" | "AirBnB",
-  fromDate: Date,
-  toDate: Date,
+  fromDate: string,
+  toDate: string,
   description?: string,
 ) {
   const user = auth();
@@ -31,8 +30,8 @@ export async function createBooking(
     byId: user.userId,
     byName: fullUserData.fullName,
     bookingType: bookingType,
-    fromDate: addDays(fromDate, 1).toDateString(), // Fixes offset due to timezones on server
-    toDate: addDays(toDate, 1).toDateString(), // Fixes offset due to timezones on server
+    fromDate: fromDate,
+    toDate: toDate,
     description: description,
   });
   return SUCCESS;
@@ -40,8 +39,8 @@ export async function createBooking(
 
 export async function editBooking(
   bookingType: "Private" | "Public" | "AirBnB",
-  fromDate: Date,
-  toDate: Date,
+  fromDate: string,
+  toDate: string,
   bookingId?: number,
   description?: string,
 ) {
@@ -58,8 +57,8 @@ export async function editBooking(
     .set({
       updatedAt: sql`NOW()`,
       bookingType: bookingType,
-      fromDate: fromDate.toDateString(),
-      toDate: toDate.toDateString(),
+      fromDate: fromDate,
+      toDate: toDate,
       description: description,
     })
     .where(eq(bookings.id, bookingId));

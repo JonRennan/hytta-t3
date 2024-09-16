@@ -13,6 +13,7 @@ export const formatDayLong = "EEEE";
 export const formatDayShort = "eee";
 export const formatDayNum = "d";
 export const formatDisplayBooking = "do MMM";
+export const formatDbDate = "yyyy-MM-dd";
 
 // Drizzle
 

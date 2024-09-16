@@ -46,7 +46,12 @@ import {
 
 import { cn } from "~/lib/utils";
 import { createBooking, editBooking } from "~/server/actions";
-import { bookingFormSchema, formatDateString, today } from "~/types";
+import {
+  bookingFormSchema,
+  formatDateString,
+  formatDbDate,
+  today,
+} from "~/types";
 
 interface BookingFormProps {
   selectedDateFrom?: Date;
@@ -108,8 +113,8 @@ export function BookingForm({
     try {
       let res = await createBooking(
         values.bookingType,
-        values.fromDate,
-        values.toDate,
+        format(values.fromDate, formatDbDate),
+        format(values.toDate, formatDbDate),
         values.description,
       );
       toast.dismiss("creating-booking");
@@ -148,8 +153,8 @@ export function BookingForm({
     try {
       let res = await editBooking(
         values.bookingType,
-        values.fromDate,
-        values.toDate,
+        format(values.fromDate, formatDbDate),
+        format(values.toDate, formatDbDate),
         bookingId,
         values.description,
       );
