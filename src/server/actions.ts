@@ -14,7 +14,7 @@ import { bookings } from "~/server/db/schema";
 import { getBookingById } from "~/server/queries";
 
 export async function createBooking(
-  bookingType: string,
+  bookingType: "Private" | "Public" | "AirBnB",
   fromDate: Date,
   toDate: Date,
   description?: string,
@@ -31,8 +31,8 @@ export async function createBooking(
     byId: user.userId,
     byName: fullUserData.fullName,
     bookingType: bookingType,
-    fromDate: addDays(fromDate, 1), // Fixes offset due to timezones on server
-    toDate: addDays(toDate, 1), // Fixes offset due to timezones on server
+    fromDate: addDays(fromDate, 1).toDateString(), // Fixes offset due to timezones on server
+    toDate: addDays(toDate, 1).toDateString(), // Fixes offset due to timezones on server
     description: description,
   });
   return SUCCESS;
@@ -58,8 +58,8 @@ export async function editBooking(
     .set({
       updatedAt: sql`NOW()`,
       bookingType: bookingType,
-      fromDate: addDays(fromDate, 1).toDateString(), // Fixes offset due to timezones on server
-      toDate: addDays(toDate, 1).toDateString(), // Fixes offset due to timezones on server
+      fromDate: fromDate.toDateString(),
+      toDate: toDate.toDateString(),
       description: description,
     })
     .where(eq(bookings.id, bookingId));
