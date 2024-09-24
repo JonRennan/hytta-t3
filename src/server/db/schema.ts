@@ -26,8 +26,8 @@ export const bookings = createTable("booking", {
   cabinId: integer("cabin_id")
     .references(() => cabins.id)
     .notNull(),
-  byId: varchar("user_id", { length: 256 }).notNull(),
-  byName: varchar("user_name", { length: 256 }),
+  byId: varchar("user_id", { length: 32 }).notNull(),
+  byName: varchar("user_name", { length: 64 }),
   createdAt: timestamp("created_at", { withTimezone: true })
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),
@@ -38,23 +38,22 @@ export const bookings = createTable("booking", {
   fromDate: date("from_date").notNull(),
   toDate: date("to_date").notNull(),
   description: varchar("description", { length: 256 }),
-  participants: varchar("participants", { length: 1024 }),
 });
 
 export const cabins = createTable("cabin", {
   id: serial("id").primaryKey(),
-  owner: varchar("owner_id", { length: 256 }).notNull(),
-  name: varchar("name", { length: 256 }),
+  owner: varchar("owner_id", { length: 32 }).notNull(),
+  name: varchar("name", { length: 64 }),
   createdAt: timestamp("created_at", { withTimezone: true })
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),
   updatedAt: timestamp("updated_at", { withTimezone: true })
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),
-  imageLink: varchar("image_link", { length: 256 }),
-  description: varchar("description", { length: 1024 }),
-  address: varchar("address", { length: 256 }),
-  gmapsLink: varchar("gmaps_link", { length: 256 }),
+  imageLink: varchar("image_link", { length: 128 }),
+  description: varchar("description", { length: 256 }),
+  address: varchar("address", { length: 64 }),
+  gmapsLink: varchar("gmaps_link", { length: 128 }),
   isPubliclyViewable: boolean("publicly_viewable").default(false).notNull(),
   isPubliclyWriteable: boolean("publicly_writeable").default(false).notNull(),
 });
