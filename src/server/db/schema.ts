@@ -8,6 +8,8 @@ import {
   serial,
   timestamp,
   varchar,
+  boolean,
+  integer,
 } from "drizzle-orm/pg-core";
 import { bookingTypeEnum } from "~/types";
 
@@ -21,6 +23,7 @@ export const createTable = pgTableCreator((name) => `hytta-t3_${name}`);
 
 export const bookings = createTable("booking", {
   id: serial("id").primaryKey(),
+  cabinId: integer("cabin_id").references(() => cabins.id),
   byId: varchar("user_id", { length: 256 }).notNull(),
   byName: varchar("user_name", { length: 256 }),
   createdAt: timestamp("created_at", { withTimezone: true }).default(
@@ -34,4 +37,22 @@ export const bookings = createTable("booking", {
   toDate: date("to_date").notNull(),
   description: varchar("description", { length: 256 }),
   participants: varchar("participants", { length: 1024 }),
+});
+
+export const cabins = createTable("cabin", {
+  id: serial("id").primaryKey(),
+  owner: varchar("owner_id", { length: 256 }).notNull(),
+  name: varchar("name", { length: 256 }),
+  createdAt: timestamp("created_at", { withTimezone: true }).default(
+    sql`CURRENT_TIMESTAMP`,
+  ),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).default(
+    sql`CURRENT_TIMESTAMP`,
+  ),
+  imageLink: varchar("image_link", { length: 256 }),
+  description: varchar("description", { length: 1024 }),
+  address: varchar("address", { length: 256 }),
+  gmapsLink: varchar("gmaps_link", { length: 256 }),
+  isPubliclyViewable: boolean("publicly_viewable").default(false),
+  isPubliclyWriteable: boolean("publicly_writeable").default(false),
 });

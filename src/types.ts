@@ -56,6 +56,7 @@ export const bookingFormSchema = z
 
 export class Booking {
   id: number;
+  cabinId: number | null;
   byId: string;
   byName: string | null;
   createdAt: Date | null;
@@ -68,6 +69,7 @@ export class Booking {
 
   constructor(
     id: number,
+    cabinId: number | null,
     byId: string,
     byName: string | null,
     createdAt: Date | null,
@@ -79,6 +81,7 @@ export class Booking {
     participants: string | null,
   ) {
     this.id = id;
+    this.cabinId = cabinId;
     this.byId = byId;
     this.byName = byName;
     this.createdAt = createdAt;
@@ -88,5 +91,45 @@ export class Booking {
     this.toDate = toDate;
     this.description = description;
     this.participants = participants;
+  }
+}
+
+export class Cabin {
+  id: number;
+  owner: string;
+  name: string | null;
+  createdAt: Date;
+  updatedAt: Date;
+  imageLink: string | null;
+  description: string | null;
+  address: string | null;
+  gmapsLink: string | null;
+  isPubliclyViewable: boolean;
+  isPubliclyWriteable: boolean;
+
+  constructor(
+    id: number,
+    owner: string,
+    name: string | null,
+    createdAt: Date,
+    updatedAt: Date,
+    imageLink: string | null,
+    description: string | null,
+    address: string | null,
+    gmapsLink: string | null,
+    isPubliclyViewable: boolean,
+    isPubliclyWriteable: boolean,
+  ) {
+    this.id = id;
+    this.owner = owner;
+    this.name = name;
+    this.createdAt = createdAt;
+    this.updatedAt = updatedAt;
+    this.imageLink = imageLink;
+    this.description = description;
+    this.address = address;
+    this.gmapsLink = gmapsLink;
+    this.isPubliclyViewable = isPubliclyViewable;
+    this.isPubliclyWriteable = isPubliclyWriteable;
   }
 }
