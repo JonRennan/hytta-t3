@@ -27,6 +27,7 @@ export async function createBooking(
     return PERMISSION_ERROR;
 
   await db.insert(bookings).values({
+    cabinId: 1,
     byId: user.userId,
     byName: fullUserData.fullName,
     bookingType: bookingType,

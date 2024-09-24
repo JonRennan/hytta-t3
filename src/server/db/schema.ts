@@ -23,15 +23,17 @@ export const createTable = pgTableCreator((name) => `hytta-t3_${name}`);
 
 export const bookings = createTable("booking", {
   id: serial("id").primaryKey(),
-  cabinId: integer("cabin_id").references(() => cabins.id),
+  cabinId: integer("cabin_id")
+    .references(() => cabins.id)
+    .notNull(),
   byId: varchar("user_id", { length: 256 }).notNull(),
   byName: varchar("user_name", { length: 256 }),
-  createdAt: timestamp("created_at", { withTimezone: true }).default(
-    sql`CURRENT_TIMESTAMP`,
-  ),
-  updatedAt: timestamp("updated_at", { withTimezone: true }).default(
-    sql`CURRENT_TIMESTAMP`,
-  ),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .default(sql`CURRENT_TIMESTAMP`)
+    .notNull(),
+  updatedAt: timestamp("updated_at", { withTimezone: true })
+    .default(sql`CURRENT_TIMESTAMP`)
+    .notNull(),
   bookingType: bookingTypeEnum("type").notNull(),
   fromDate: date("from_date").notNull(),
   toDate: date("to_date").notNull(),
@@ -43,16 +45,16 @@ export const cabins = createTable("cabin", {
   id: serial("id").primaryKey(),
   owner: varchar("owner_id", { length: 256 }).notNull(),
   name: varchar("name", { length: 256 }),
-  createdAt: timestamp("created_at", { withTimezone: true }).default(
-    sql`CURRENT_TIMESTAMP`,
-  ),
-  updatedAt: timestamp("updated_at", { withTimezone: true }).default(
-    sql`CURRENT_TIMESTAMP`,
-  ),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .default(sql`CURRENT_TIMESTAMP`)
+    .notNull(),
+  updatedAt: timestamp("updated_at", { withTimezone: true })
+    .default(sql`CURRENT_TIMESTAMP`)
+    .notNull(),
   imageLink: varchar("image_link", { length: 256 }),
   description: varchar("description", { length: 1024 }),
   address: varchar("address", { length: 256 }),
   gmapsLink: varchar("gmaps_link", { length: 256 }),
-  isPubliclyViewable: boolean("publicly_viewable").default(false),
-  isPubliclyWriteable: boolean("publicly_writeable").default(false),
+  isPubliclyViewable: boolean("publicly_viewable").default(false).notNull(),
+  isPubliclyWriteable: boolean("publicly_writeable").default(false).notNull(),
 });
