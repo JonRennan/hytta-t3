@@ -65,7 +65,6 @@ export class Booking {
   fromDate: string;
   toDate: string;
   description: string | null;
-  participants: string | null;
 
   constructor(
     id: number,
@@ -78,7 +77,6 @@ export class Booking {
     fromDate: string,
     toDate: string,
     description: string | null,
-    participants: string | null,
   ) {
     this.id = id;
     this.cabinId = cabinId;
@@ -90,7 +88,6 @@ export class Booking {
     this.fromDate = fromDate;
     this.toDate = toDate;
     this.description = description;
-    this.participants = participants;
   }
 }
 

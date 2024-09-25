@@ -51,7 +51,7 @@ export async function editBooking(
   if (!bookingId) return NOT_FOUND;
   const booking = await getBookingById(bookingId);
   if (!booking) return NOT_FOUND;
-  if (booking[0]!.byId !== user.userId) return PERMISSION_ERROR;
+  if (booking.byId !== user.userId) return PERMISSION_ERROR;
 
   await db
     .update(bookings)
@@ -72,7 +72,7 @@ export async function deleteBooking(bookingId: number) {
 
   const booking = await getBookingById(bookingId);
   if (!booking) return NOT_FOUND;
-  if (booking[0]!.byId !== user.userId) return PERMISSION_ERROR;
+  if (booking.byId !== user.userId) return PERMISSION_ERROR;
 
   await db.delete(bookings).where(eq(bookings.id, bookingId));
   return SUCCESS;
