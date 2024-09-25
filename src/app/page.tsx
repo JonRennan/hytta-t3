@@ -6,7 +6,7 @@ import { getBookings } from "~/server/queries";
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
-  const bookings: Booking[] = await getBookings();
+  const bookings: Booking[] = await getBookings(1);
   return (
     <main className="flex w-full flex-col p-1 sm:p-4 md:px-8">
       <CalendarWFormModal bookings={bookings} />

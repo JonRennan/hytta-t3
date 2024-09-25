@@ -1,5 +1,5 @@
 import "server-only";
-import { asc, eq, gte } from "drizzle-orm";
+import { and, asc, eq, gte } from "drizzle-orm";
 import { db } from "~/server/db";
 import { bookings, cabins } from "~/server/db/schema";
 import { Booking, Cabin, today } from "~/types";
@@ -12,15 +12,19 @@ export async function getBookingById(
   });
 }
 
-export async function getBookings(): Promise<Booking[] | undefined> {
+export async function getBookings(cabinId: number): Promise<Booking[]> {
   return db.query.bookings.findMany({
+    where: eq(bookings.id, cabinId),
     orderBy: asc(bookings.fromDate),
   });
 }
 
-export async function getFutureBookings(): Promise<Booking[] | undefined> {
+export async function getFutureBookings(cabinId: number): Promise<Booking[]> {
   return db.query.bookings.findMany({
-    where: gte(bookings.toDate, today.toISOString()),
+    where: and(
+      eq(bookings.cabinId, cabinId),
+      gte(bookings.toDate, today.toISOString()),
+    ),
     orderBy: asc(bookings.fromDate),
   });
 }
@@ -33,13 +37,13 @@ export async function getCabinById(
   });
 }
 
-export async function getCabins(): Promise<Cabin[] | undefined> {
+export async function getCabins(): Promise<Cabin[]> {
   return db.query.cabins.findMany({
     orderBy: asc(cabins.id),
   });
 }
 
-export async function getPublicCabins(): Promise<Cabin[] | undefined> {
+export async function getPublicCabins(): Promise<Cabin[]> {
   return db.query.cabins.findMany({
     where: eq(cabins.isPubliclyViewable, true),
     orderBy: asc(cabins.id),
