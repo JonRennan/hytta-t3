@@ -14,7 +14,7 @@ export async function getBookingById(
 
 export async function getBookings(cabinId: number): Promise<Booking[]> {
   return db.query.bookings.findMany({
-    where: eq(bookings.id, cabinId),
+    where: eq(bookings.cabinId, cabinId),
     orderBy: asc(bookings.fromDate),
   });
 }
