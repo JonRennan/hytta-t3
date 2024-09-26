@@ -44,7 +44,7 @@ export default function RootLayout({
         <body className={`dark ${GeistSans.className}`}>
           <TopNav />
           {children}
-          <Toaster />
+          <Toaster richColors />
         </body>
       </html>
     </ClerkProvider>
