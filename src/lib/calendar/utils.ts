@@ -60,10 +60,10 @@ function getSelectedStyle(
       className = "rounded-r-md md:rounded-r-xl";
     }
   }
-  if (booking && userId) {
+  if (booking) {
     if (booking.bookingType == "AirBnB") {
       className += " bg-airbnb-base";
-    } else if (booking.byId == userId) {
+    } else if (userId && booking.byId == userId) {
       className += " bg-tertiary-container";
     } else {
       className += " bg-secondary-container";
@@ -132,11 +132,11 @@ export function getSelectedSpanStyles(
   booking?: Booking,
   userId?: string | null,
 ): string {
-  if (booking && userId) {
+  if (booking) {
     let className = "h-2 w-full absolute top-0 left-0";
     if (booking.bookingType === "AirBnB") {
       return className + " bg-airbnb-container";
-    } else if (booking.byId === userId) {
+    } else if (userId && booking.byId === userId) {
       return className + " bg-tertiary-base";
     }
     return className + " bg-secondary-base";
