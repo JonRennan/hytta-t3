@@ -314,10 +314,14 @@ export function BookingForm({
         />
         {inDialog ? (
           <DialogFooter>
-            <Button type="submit">Reserver</Button>
+            <Button variant={"outline"} type="submit" className="m-auto">
+              Reserver
+            </Button>
           </DialogFooter>
         ) : (
-          <Button type="submit">Reserver</Button>
+          <Button variant={"outline"} type="submit" className="m-auto">
+            Reserver
+          </Button>
         )}
       </form>
     </Form>

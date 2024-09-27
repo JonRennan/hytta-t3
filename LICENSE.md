@@ -1,7 +1,9 @@
 MIT License
 
 Copyright (c) 2024 Jon Rennan
+
 Copyright (c) 2023 shadcn
+
 Copyright (c) 2024 Salimi
 
 Permission is hereby granted, free of charge, to any person obtaining a copy

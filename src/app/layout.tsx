@@ -6,6 +6,8 @@ import {
   UserButton,
 } from "@clerk/nextjs";
 import { nbNO } from "@clerk/localizations";
+import { ModeToggle } from "~/components/mode-toggle";
+import { ThemeProvider } from "~/providers";
 import { Toaster } from "~/components/ui/sonner";
 import "~/styles/globals.css";
 import { GeistSans } from "geist/font/sans";
@@ -19,16 +21,19 @@ export const metadata = {
 
 function TopNav() {
   return (
-    <nav className="flex w-full justify-around bg-surface-bright py-3">
+    <nav className="flex w-full items-center justify-around bg-surface-bright py-3">
       <Link href="/">Kalender</Link>
-      <SignedOut>
-        <SignInButton mode={"modal"}>
-          <button>Logg inn</button>
-        </SignInButton>
-      </SignedOut>
-      <SignedIn>
-        <UserButton />
-      </SignedIn>
+      <div className="flex items-center gap-4">
+        <ModeToggle />
+        <SignedOut>
+          <SignInButton mode={"modal"}>
+            <button>Logg inn</button>
+          </SignInButton>
+        </SignedOut>
+        <SignedIn>
+          <UserButton />
+        </SignedIn>
+      </div>
     </nav>
   );
 }
@@ -41,10 +46,12 @@ export default function RootLayout({
   return (
     <ClerkProvider localization={nbNO}>
       <html lang="no">
-        <body className={`dark ${GeistSans.className}`}>
-          <TopNav />
-          {children}
-          <Toaster richColors />
+        <body className={GeistSans.className}>
+          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+            <TopNav />
+            {children}
+            <Toaster richColors />
+          </ThemeProvider>
         </body>
       </html>
     </ClerkProvider>
