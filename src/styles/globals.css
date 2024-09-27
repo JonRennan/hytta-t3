@@ -39,7 +39,8 @@
         --color-outline: #757680;
         --color-outline-variant: #C5C6D0;
 
-        --color-airbnb: #FF385C;
+        --color-airbnb: #FFDAD6;
+        --color-airbnb-container: #FF385C;
 
         /* shadcn */
         --background: 0 0% 100%;
@@ -104,6 +105,9 @@
         --color-on-surface-variant: #C5C6D0;
         --color-outline: #8F909A;
         --color-outline-variant: #45464F;
+
+        --color-airbnb: #FF385C;
+        --color-airbnb-container: #FFDAD6;
 
         /*  shadcn */
         --background: 222.2 84% 4.9%;

@@ -70,7 +70,10 @@ export default {
           variant: "var(--color-outline-variant)",
         },
 
-        airbnb: "var(--color-airbnb)",
+        airbnb: {
+          base: "var(--color-airbnb)",
+          container: "var(--color-airbnb-container)",
+        },
         hotpink: "hotpink",
 
         // shadcn

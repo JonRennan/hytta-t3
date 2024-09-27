@@ -14,7 +14,7 @@ This project is meant to be a private booking calendar for my family's cabin.
   family trips.
 
 - [ ] Multiple cabins: Allow specific users to set up/delete their own cabin
-  - [ ] DB schema for cabin
+  - [x] DB schema for cabin
   - [ ] Isolate users per cabin
   - [ ] Invite system to cabins
   - [ ] Update front-end to view different cabins

@@ -41,6 +41,8 @@ function getSelectedStyle(
   day: Date,
   selectedDateFirst: Date | string,
   selectedDateLast: Date | string,
+  booking?: Booking,
+  userId?: string | null,
 ): string {
   let className = "";
   if (isSameDay(selectedDateFirst, selectedDateLast)) {
@@ -58,71 +60,86 @@ function getSelectedStyle(
       className = "rounded-r-md md:rounded-r-xl";
     }
   }
+  if (booking && userId) {
+    if (booking.bookingType == "AirBnB") {
+      className += " bg-airbnb-base";
+    } else if (booking.byId == userId) {
+      className += " bg-tertiary-container";
+    } else {
+      className += " bg-secondary-container";
+    }
+  }
   return className;
 }
 
 export function getDayBooking(
   day: Date,
   bookings: Booking[],
-): [boolean, Booking | null] {
-  let booked = false;
-  let returnBooking: Booking | null = null;
+): Booking | undefined {
+  let returnBooking: Booking | undefined = undefined;
   bookings.forEach((booking) => {
     if (isBefore(booking.fromDate, day) && isBefore(day, booking.toDate)) {
-      booked = true;
       returnBooking = booking;
     } else if (
       isSameDay(booking.toDate, day) ||
       isSameDay(booking.fromDate, day)
     ) {
-      booked = true;
       returnBooking = booking;
     }
   });
-  return [booked, returnBooking];
+  return returnBooking;
 }
 
 export function getCellStyles(
   cellDay: Date,
   selectedDates: Date[],
   viewMonth: Date,
-  dayIsBooked: boolean,
-  dayBooking: Booking | null,
+  booking?: Booking,
+  userId?: string | null,
 ): string {
-  if (dayIsBooked) {
+  if (booking) {
     return cn(
-      "pointer-events-none bg-surface-container",
-      getSelectedStyle(cellDay, dayBooking!.fromDate, dayBooking!.toDate),
+      "pointer-events-none",
+      getSelectedStyle(
+        cellDay,
+        booking.fromDate,
+        booking.toDate,
+        booking,
+        userId,
+      ),
       "",
     );
   } else if (isSelected(cellDay, selectedDates[0]!, selectedDates[1]!)) {
     return cn(
-      "cursor-pointer bg-surface-container_high",
+      "cursor-pointer bg-primary-container",
       getSelectedStyle(cellDay, selectedDates[0]!, selectedDates[1]!),
     );
   } else if (
     !isSameMonth(cellDay, viewMonth) &&
     !isPast(cellDay.setHours(23, 59, 59, 999))
   ) {
-    return "cursor-pointer text-surface-container_highest rounded-sm md:rounded-md bg-surface-container_low hover:bg-surface-container m-0.5 md:m-1";
+    return "cursor-pointer text-surface-on_variant rounded-sm md:rounded-md bg-surface-container hover:bg-surface-container m-0.5 md:m-1";
   } else if (isPast(cellDay.setHours(23, 59, 59, 999))) {
     return "text-surface-container_highest rounded-sm md:rounded-md bg-surface-container_low pointer-events-none m-0.5 md:m-1";
   } else {
-    return "cursor-pointer bg-surface-container rounded-sm md:rounded-md hover:bg-surface-container_high m-0.5 md:m-1";
+    return "cursor-pointer bg-surface-container_highest rounded-sm md:rounded-md hover:bg-surface-container_high m-0.5 md:m-1";
   }
 }
 
 export function getSelectedSpanStyles(
   cellDay: Date,
   selectedDates: Date[],
-  dayIsBooked: boolean,
-  dayBooking: Booking | null,
+  booking?: Booking,
+  userId?: string | null,
 ): string {
-  if (dayIsBooked) {
-    if (dayBooking!.bookingType === "AirBnB") {
-      return "bg-airbnb h-2 w-full absolute top-0 left-0";
+  if (booking && userId) {
+    let className = "h-2 w-full absolute top-0 left-0";
+    if (booking.bookingType === "AirBnB") {
+      return className + " bg-airbnb-container";
+    } else if (booking.byId === userId) {
+      return className + " bg-tertiary-base";
     }
-    return "bg-tertiary-base h-2 w-full absolute top-0 left-0";
+    return className + " bg-secondary-base";
   } else if (isSelected(cellDay, selectedDates[0]!, selectedDates[1]!)) {
     return "bg-primary-base h-2 w-full absolute top-0 left-0";
   }

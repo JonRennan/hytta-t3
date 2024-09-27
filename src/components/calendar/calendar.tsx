@@ -1,3 +1,4 @@
+import { useAuth } from "@clerk/nextjs";
 import {
   addDays,
   addMonths,
@@ -48,6 +49,8 @@ export function Calendar({
   const monthEnd = endOfMonth(viewDate);
 
   setDefaultOptions({ locale: nb });
+
+  const user = useAuth();
 
   const onDateClick = (day: Date) => {
     if (previousSelectedDate === undefinedDate) {
@@ -147,7 +150,7 @@ export function Calendar({
       for (let i = 0; i < 7; i++) {
         formattedDate = format(day, formatDayNum);
         const cloneDay = day;
-        const [dayIsBooked, dayBooking] = getDayBooking(day, bookings);
+        const dayBooking = getDayBooking(day, bookings);
         days.push(
           <div
             className={cn(
@@ -156,8 +159,8 @@ export function Calendar({
                 day,
                 orderedSelectedDates,
                 viewDate,
-                dayIsBooked,
                 dayBooking,
+                user.userId,
               ),
             )}
             key={day.toString()}
@@ -167,8 +170,8 @@ export function Calendar({
               className={getSelectedSpanStyles(
                 day,
                 orderedSelectedDates,
-                dayIsBooked,
                 dayBooking,
+                user.userId,
               )}
             >
               {" "}
