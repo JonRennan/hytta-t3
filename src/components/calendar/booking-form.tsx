@@ -56,6 +56,7 @@ import {
 interface BookingFormProps {
   selectedDateFrom?: Date;
   selectedDateTo?: Date;
+  cabinId?: number;
   bookingId?: number;
   prevBookingType?: "Private" | "Public" | "AirBnB";
   prevDescription?: string;
@@ -66,6 +67,7 @@ interface BookingFormProps {
 export function BookingForm({
   selectedDateFrom,
   selectedDateTo,
+  cabinId,
   bookingId,
   prevBookingType,
   prevDescription,
@@ -111,23 +113,29 @@ export function BookingForm({
     );
 
     try {
-      let res = await createBooking(
-        values.bookingType,
-        format(values.fromDate, formatDbDate),
-        format(values.toDate, formatDbDate),
-        values.description,
-      );
-      toast.dismiss("creating-booking");
-      if (res === SUCCESS) {
-        toast.success("Reservasjonen ble laget!");
-      } else if (res === AUTHENTICATION_ERROR) {
-        toast.error("Du må være pålogget for å reservere hytta.");
-      } else if (res === PERMISSION_ERROR) {
-        toast.error(
-          "Du mangler tillatelse til å reservere hytta. Kontakt Jon hvis du mener det er feil.",
+      if (cabinId) {
+        let res = await createBooking(
+          cabinId,
+          values.bookingType,
+          format(values.fromDate, formatDbDate),
+          format(values.toDate, formatDbDate),
+          values.description,
         );
+        toast.dismiss("creating-booking");
+        if (res === SUCCESS) {
+          toast.success("Reservasjonen ble laget!");
+        } else if (res === AUTHENTICATION_ERROR) {
+          toast.error("Du må være pålogget for å reservere hytta.");
+        } else if (res === PERMISSION_ERROR) {
+          toast.error(
+            "Du mangler tillatelse til å reservere hytta. Kontakt Jon hvis du mener det er feil.",
+          );
+        } else {
+          toast.error("Noe gikk galt i opprettingen av reservasjonen.");
+        }
       } else {
-        toast.error("Noe gikk galt i opprettingen av reservasjonen.");
+        toast.dismiss("creating-booking");
+        toast.error("En reservasjon må være knyttet til en hytte.");
       }
       if (inDialog && setOpen) {
         setOpen(false);

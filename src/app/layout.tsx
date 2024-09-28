@@ -22,7 +22,7 @@ export const metadata = {
 function TopNav() {
   return (
     <nav className="flex w-full items-center justify-around bg-surface-bright py-3">
-      <Link href="/">Kalender</Link>
+      <Link href="/">Hjem</Link>
       <div className="flex items-center gap-4">
         <ModeToggle />
         <SignedOut>

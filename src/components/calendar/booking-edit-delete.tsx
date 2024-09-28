@@ -34,7 +34,7 @@ export function BookingEditDelete({ booking }: BookingEditDeleteProps) {
 
   async function onClickDeleteButton() {
     toast(
-      <div className="flex items-center gap-2 text-white">
+      <div className="flex items-center gap-2 text-surface-on">
         <Spinner /> <span className="text-lg">Sletter reservasjon...</span>
       </div>,
       {

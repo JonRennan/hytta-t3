@@ -17,10 +17,12 @@ import { Booking, undefinedDate } from "~/types";
 
 interface CalendarWFormModalProps {
   bookings: Booking[];
+  cabinId: number;
 }
 
 export default function CalendarWFormModal({
   bookings,
+  cabinId,
 }: CalendarWFormModalProps) {
   const [selectedDates, setSelectedDates] = useState<Date[]>([
     undefinedDate,
@@ -67,6 +69,7 @@ export default function CalendarWFormModal({
                   }
                   inDialog={true}
                   setOpen={setOpen}
+                  cabinId={cabinId}
                 />
               </div>
             </DialogContent>

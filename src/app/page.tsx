@@ -1,16 +1,21 @@
-import CalendarWFormModal from "~/components/calendar/calendar-w-form-modal";
-import { FutureBookingsList } from "~/components/calendar/future-bookings-list";
-import { Booking } from "~/types";
-import { getBookings } from "~/server/queries";
+import CabinCard from "~/components/cabin/cabin-card";
+import { Cabin } from "~/types";
+import { getCabins } from "~/server/queries";
 
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
-  const bookings: Booking[] = await getBookings(1);
+  const cabins: Cabin[] = await getCabins();
   return (
-    <main className="flex w-full flex-col p-1 sm:p-4 md:px-8">
-      <CalendarWFormModal bookings={bookings} />
-      <FutureBookingsList bookings={bookings} />
+    <main className="m-auto w-full max-w-screen-lg p-4">
+      <h1 className="text-center text-3xl font-bold text-primary">
+        Dine hytter
+      </h1>
+      <div className="mt-8 flex flex-wrap gap-4">
+        {cabins.map((cabin) => (
+          <CabinCard cabin={cabin} />
+        ))}
+      </div>
     </main>
   );
 }

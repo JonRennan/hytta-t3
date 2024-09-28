@@ -13,6 +13,7 @@ import { bookings } from "~/server/db/schema";
 import { getBookingById } from "~/server/queries";
 
 export async function createBooking(
+  cabinId: number,
   bookingType: "Private" | "Public" | "AirBnB",
   fromDate: string,
   toDate: string,
@@ -27,7 +28,7 @@ export async function createBooking(
     return PERMISSION_ERROR;
 
   await db.insert(bookings).values({
-    cabinId: 1,
+    cabinId: cabinId,
     byId: user.userId,
     byName: fullUserData.fullName,
     bookingType: bookingType,

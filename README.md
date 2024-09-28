@@ -17,7 +17,7 @@ This project is meant to be a private booking calendar for my family's cabin.
   - [x] DB schema for cabin
   - [ ] Isolate users per cabin
   - [ ] Invite system to cabins
-  - [ ] Update front-end to view different cabins
+  - [x] Update front-end to view different cabins
   - [ ] Restrict r/w-access per cabin
 
 - [ ] Fridge status: ability to upload images to let others know what is left at the cabin.
