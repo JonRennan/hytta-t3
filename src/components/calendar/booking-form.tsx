@@ -101,7 +101,7 @@ export function BookingForm({
     values: z.infer<typeof bookingFormSchema>,
   ) {
     toast(
-      <div className="flex items-center gap-2 text-white">
+      <div className="flex items-center gap-2 text-surface-on">
         <Spinner /> <span className="text-lg">Lager reservasjon...</span>
       </div>,
       {
@@ -141,7 +141,7 @@ export function BookingForm({
 
   async function submitEditBooking(values: z.infer<typeof bookingFormSchema>) {
     toast(
-      <div className="flex items-center gap-2 text-white">
+      <div className="flex items-center gap-2 text-surface-on">
         <Spinner /> <span className="text-lg">Endrer reservasjon...</span>
       </div>,
       {

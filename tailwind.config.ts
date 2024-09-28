@@ -39,22 +39,22 @@ export default {
         },
 
         tertiary: {
-          base: "var(--color-tertiary)",
+          DEFAULT: "var(--color-tertiary)",
           on: "var(--color-on-tertiary)",
           container: "var(--color-tertiary-container)",
           container_on: "var(--color-on-tertiary-container)",
         },
 
         error: {
-          base: "var(--color-error)",
+          DEFAULT: "var(--color-error)",
           on: "var(--color-on-error)",
           container: "var(--color-error-container)",
           container_on: "var(--color-on-error-container)",
         },
 
         surface: {
+          DEFAULT: "var(--color-surface)",
           dim: "var(--color-surface-dim)",
-          base: "var(--color-surface)",
           bright: "var(--color-surface-bright)",
           container_lowest: "var(--color-surface-container-lowest)",
           container_low: "var(--color-surface-container-low)",
@@ -66,12 +66,12 @@ export default {
         },
 
         outline: {
-          base: "var(--color-outline)",
+          DEFAULT: "var(--color-outline)",
           variant: "var(--color-outline-variant)",
         },
 
         airbnb: {
-          base: "var(--color-airbnb)",
+          DEFAULT: "var(--color-airbnb)",
           container: "var(--color-airbnb-container)",
         },
         hotpink: "hotpink",

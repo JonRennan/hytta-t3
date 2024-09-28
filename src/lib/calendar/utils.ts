@@ -62,7 +62,7 @@ function getSelectedStyle(
   }
   if (booking) {
     if (booking.bookingType == "AirBnB") {
-      className += " bg-airbnb-base";
+      className += " bg-airbnb";
     } else if (userId && booking.byId == userId) {
       className += " bg-tertiary-container";
     } else {
@@ -137,7 +137,7 @@ export function getSelectedSpanStyles(
     if (booking.bookingType === "AirBnB") {
       return className + " bg-airbnb-container";
     } else if (userId && booking.byId === userId) {
-      return className + " bg-tertiary-base";
+      return className + " bg-tertiary";
     }
     return className + " bg-secondary-base";
   } else if (isSelected(cellDay, selectedDates[0]!, selectedDates[1]!)) {
