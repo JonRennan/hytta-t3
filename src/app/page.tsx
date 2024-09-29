@@ -11,7 +11,7 @@ export default async function Home() {
       <h1 className="text-center text-3xl font-bold text-primary">
         Dine hytter
       </h1>
-      <div className="mt-8 flex flex-wrap gap-4">
+      <div className="mt-4 flex flex-wrap gap-4">
         {cabins.map((cabin) => (
           <CabinCard cabin={cabin} />
         ))}
