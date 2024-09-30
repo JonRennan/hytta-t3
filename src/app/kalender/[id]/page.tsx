@@ -1,6 +1,9 @@
+import { currentUser } from "@clerk/nextjs/server";
+import { CabinNotFound } from "~/components/cabin/cabin-not-found";
 import CalendarWFormModal from "~/components/calendar/calendar-w-form-modal";
 import { FutureBookingsList } from "~/components/calendar/future-bookings-list";
-import { Booking, Cabin } from "~/types";
+import { hasCabinAccess } from "~/lib/calendar/utils";
+import { Booking, Cabin, CABIN_READ_ACCESS } from "~/types";
 import { getBookings, getCabinById } from "~/server/queries";
 
 export const dynamic = "force-dynamic";
@@ -8,13 +11,19 @@ export const dynamic = "force-dynamic";
 export default async function Page({ params }: { params: { id: number } }) {
   const bookings: Booking[] = await getBookings(params.id);
   const cabin: Cabin | undefined = await getCabinById(params.id);
+  const user = await currentUser();
 
   if (!cabin) {
-    return (
-      <p className="text-surface-on_v mx-auto mt-8 w-fit rounded bg-surface-container_low p-4 text-center text-2xl">
-        Fant ikke hytte {params.id}, eller så har du ikke tilgang til hytta.
-      </p>
-    );
+    return <CabinNotFound cabinId={params.id} />;
+  }
+  if (!cabin.isPubliclyViewable) {
+    if (!user) {
+      return <CabinNotFound cabinId={params.id} />;
+    }
+
+    if (!hasCabinAccess(CABIN_READ_ACCESS, user, cabin.id)) {
+      return <CabinNotFound cabinId={params.id} />;
+    }
   }
 
   return (
@@ -22,7 +31,11 @@ export default async function Page({ params }: { params: { id: number } }) {
       <h1 className="text-4xl font-bold uppercase text-primary-container_on">
         {cabin.name}
       </h1>
-      <CalendarWFormModal bookings={bookings} cabinId={cabin.id} />
+      <CalendarWFormModal
+        bookings={bookings}
+        cabin={cabin}
+        userId={user ? user.id : undefined}
+      />
       <FutureBookingsList bookings={bookings} />
     </main>
   );

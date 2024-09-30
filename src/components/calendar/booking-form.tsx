@@ -1,11 +1,9 @@
-import { useAuth } from "@clerk/nextjs";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { format, setDefaultOptions } from "date-fns";
 import { nb } from "date-fns/locale";
 
 import { CalendarIcon } from "lucide-react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React from "react";
 import { useForm } from "react-hook-form";
@@ -87,18 +85,6 @@ export function BookingForm({
     },
   });
 
-  const { isLoaded, userId } = useAuth();
-  if (!isLoaded || !userId) {
-    return (
-      <div>
-        <Link href={"/logg-inn/"}>
-          <Button variant={"link"}>Logg inn</Button>
-        </Link>
-        for å reservere hytta
-      </div>
-    );
-  }
-
   async function submitCreateBooking(
     values: z.infer<typeof bookingFormSchema>,
   ) {
@@ -125,11 +111,13 @@ export function BookingForm({
         if (res === SUCCESS) {
           toast.success("Reservasjonen ble laget!");
         } else if (res === AUTHENTICATION_ERROR) {
-          toast.error("Du må være pålogget for å reservere hytta.");
+          toast.error("Du må være pålogget for å reservere denne hytta.");
         } else if (res === PERMISSION_ERROR) {
           toast.error(
-            "Du mangler tillatelse til å reservere hytta. Kontakt Jon hvis du mener det er feil.",
+            "Du mangler tillatelse til å reservere denne hytta. Kontakt Jon hvis du mener det er feil.",
           );
+        } else if (res === NOT_FOUND) {
+          toast.error("Fant ikke hytta du prøvde å reservere.");
         } else {
           toast.error("Noe gikk galt i opprettingen av reservasjonen.");
         }

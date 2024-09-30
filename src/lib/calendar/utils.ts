@@ -1,3 +1,4 @@
+import { User } from "@clerk/backend";
 import {
   differenceInCalendarDays,
   isPast,
@@ -144,4 +145,18 @@ export function getSelectedSpanStyles(
     return "bg-primary-base h-2 w-full absolute top-0 left-0";
   }
   return "hidden";
+}
+
+export function hasCabinAccess(
+  accessType: string,
+  user: User,
+  cabinId: number,
+): boolean {
+  const cabinsWithAccess: number[] | undefined = user?.privateMetadata?.[
+    accessType
+  ] as number[] | undefined;
+
+  if (!cabinsWithAccess) return false;
+
+  return cabinsWithAccess.includes(cabinId);
 }

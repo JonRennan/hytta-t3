@@ -37,15 +37,11 @@ export async function getCabinById(
   });
 }
 
-export async function getCabins(): Promise<Cabin[]> {
+export async function getPublicOrPrivateCabins(
+  isPublic = false,
+): Promise<Cabin[]> {
   return db.query.cabins.findMany({
-    orderBy: asc(cabins.id),
-  });
-}
-
-export async function getPublicCabins(): Promise<Cabin[]> {
-  return db.query.cabins.findMany({
-    where: eq(cabins.isPubliclyViewable, true),
+    where: eq(cabins.isPubliclyViewable, isPublic),
     orderBy: asc(cabins.id),
   });
 }

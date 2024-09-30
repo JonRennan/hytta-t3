@@ -15,6 +15,10 @@ export const formatDayNum = "d";
 export const formatDisplayBooking = "do MMM";
 export const formatDbDate = "yyyy-MM-dd";
 
+// Clerk
+export const CABIN_READ_ACCESS = "cabin-read-access";
+export const CABIN_WRITE_ACCESS = "cabin-write-access";
+
 // Drizzle
 
 export const bookingTypeEnum = pgEnum("booking_type", [

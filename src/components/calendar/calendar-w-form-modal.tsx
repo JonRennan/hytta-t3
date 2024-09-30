@@ -1,6 +1,5 @@
 "use client";
 
-import { SignedIn, SignedOut, SignInButton } from "@clerk/nextjs";
 import React, { useState } from "react";
 import { BookingForm } from "~/components/calendar/booking-form";
 import { Calendar } from "~/components/calendar/calendar";
@@ -13,22 +12,25 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "~/components/ui/dialog";
-import { Booking, undefinedDate } from "~/types";
+import { Booking, Cabin, undefinedDate } from "~/types";
 
 interface CalendarWFormModalProps {
   bookings: Booking[];
-  cabinId: number;
+  cabin: Cabin;
+  userId: string | undefined;
 }
 
 export default function CalendarWFormModal({
   bookings,
-  cabinId,
+  cabin,
+  userId,
 }: CalendarWFormModalProps) {
   const [selectedDates, setSelectedDates] = useState<Date[]>([
     undefinedDate,
     undefinedDate,
   ]);
   const [open, setOpen] = useState<boolean>(false);
+
   return (
     <div className="flex w-full flex-col items-center gap-4">
       <Calendar
@@ -37,23 +39,19 @@ export default function CalendarWFormModal({
         bookings={bookings}
       />
       <div>
-        <SignedOut>
-          <SignInButton mode={"modal"}>
-            <Button variant={"outline"}>Reserver hytta</Button>
-          </SignInButton>
-        </SignedOut>
-        <SignedIn>
+        {userId || cabin.isPubliclyWriteable ? (
           <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-              <Button variant={"outline"}>Reserver hytta</Button>
+              <Button variant={"outline"}>Reserver {cabin.name}</Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
               <DialogHeader>
-                <DialogTitle>Reserver hytta</DialogTitle>
+                <DialogTitle className="text-center">
+                  Reserver {cabin.name}
+                </DialogTitle>
               </DialogHeader>
-              <DialogDescription>
-                Kalenderen er ment som en oversikt over når vi vurderer/har
-                planlagt turer, ikke for å erstatte kommunikasjon.
+              <DialogDescription className="text-center">
+                {cabin.description}
               </DialogDescription>
               <div className="grid gap-4 py-4">
                 <BookingForm
@@ -69,12 +67,14 @@ export default function CalendarWFormModal({
                   }
                   inDialog={true}
                   setOpen={setOpen}
-                  cabinId={cabinId}
+                  cabinId={cabin.id}
                 />
               </div>
             </DialogContent>
           </Dialog>
-        </SignedIn>
+        ) : (
+          <></>
+        )}
       </div>
     </div>
   );
