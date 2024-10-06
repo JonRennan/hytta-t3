@@ -10,6 +10,7 @@ import {
   setDefaultOptions,
   startOfMonth,
   startOfWeek,
+  subDays,
   subMonths,
 } from "date-fns";
 import { nb } from "date-fns/locale";
@@ -20,15 +21,16 @@ import {
   getCellStyles,
   getDayBooking,
   getSelectedSpanStyles,
+  selectionContainsBooking,
 } from "~/lib/calendar/utils";
 import { cn } from "~/lib/utils";
 import {
-  formatMonthYear,
-  formatDayLong,
-  formatDayShort,
-  undefinedDate,
-  formatDayNum,
   Booking,
+  formatDayLong,
+  formatDayNum,
+  formatDayShort,
+  formatMonthYear,
+  undefinedDate,
 } from "~/types";
 
 interface CalendarProps {
@@ -52,18 +54,38 @@ export function Calendar({
 
   const user = useAuth();
 
-  const onDateClick = (day: Date) => {
-    if (previousSelectedDate === undefinedDate) {
+  const onDateClick = (day: Date, dayBooking: Booking | undefined) => {
+    if (previousSelectedDate === undefinedDate && !dayBooking) {
       setPreviousSelectedDate(day);
       setOrderedSelectedDates([day, day]);
-    } else {
-      if (isBefore(day, previousSelectedDate)) {
+      if (isBefore(day, monthStart)) {
+        prevMonth();
+      } else if (isAfter(day, monthEnd)) {
+        nextMonth();
+      }
+      return;
+    }
+
+    const [isBooked, firstBooking, lastBooking] = selectionContainsBooking(
+      day,
+      previousSelectedDate,
+      bookings,
+    );
+
+    if (isBefore(day, previousSelectedDate)) {
+      if (isBooked) {
+        setOrderedSelectedDates([day, subDays(firstBooking!.fromDate, 1)]);
+      } else {
         setOrderedSelectedDates([day, previousSelectedDate]);
+      }
+    } else {
+      if (isBooked) {
+        setOrderedSelectedDates([addDays(lastBooking!.toDate, 1), day]);
       } else {
         setOrderedSelectedDates([previousSelectedDate, day]);
       }
-      setPreviousSelectedDate(day);
     }
+    setPreviousSelectedDate(day);
     if (isBefore(day, monthStart)) {
       prevMonth();
     } else if (isAfter(day, monthEnd)) {
@@ -164,7 +186,7 @@ export function Calendar({
               ),
             )}
             key={day.toString()}
-            onClick={() => onDateClick(cloneDay)}
+            onClick={() => onDateClick(cloneDay, dayBooking)}
           >
             <span
               className={getSelectedSpanStyles(

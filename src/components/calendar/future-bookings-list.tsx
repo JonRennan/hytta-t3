@@ -4,8 +4,11 @@ import { nb } from "date-fns/locale";
 import React from "react";
 import { BookingEditDelete } from "~/components/calendar/booking-edit-delete";
 import { Separator } from "~/components/ui/separator";
-import { bookingTypeEnumToString } from "~/lib/calendar/utils";
-import { Booking, formatDisplayBooking, today } from "~/types";
+import {
+  bookingTypeEnumToString,
+  filterOutPastBookings,
+} from "~/lib/calendar/utils";
+import { Booking, formatDisplayBooking } from "~/types";
 
 interface FutureBookingsListProps {
   bookings: Booking[];
@@ -15,9 +18,7 @@ export async function FutureBookingsList({
   bookings,
 }: FutureBookingsListProps) {
   setDefaultOptions({ locale: nb });
-  const futureBookings = bookings.filter((booking) => {
-    return new Date(booking.toDate).getTime() >= today.getTime();
-  });
+  const futureBookings = filterOutPastBookings(bookings);
   const { userId } = auth();
 
   return (

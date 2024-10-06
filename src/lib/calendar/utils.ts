@@ -8,7 +8,7 @@ import {
   isBefore,
 } from "date-fns";
 import { cn } from "~/lib/utils";
-import { Booking } from "~/types";
+import { Booking, today } from "~/types";
 
 export function bookingTypeEnumToString(bookingTypeValue: string): string {
   if (bookingTypeValue === "Private") {
@@ -159,4 +159,50 @@ export function hasCabinAccess(
   if (!cabinsWithAccess) return false;
 
   return cabinsWithAccess.includes(cabinId);
+}
+
+export function filterOutPastBookings(bookings: Booking[]): Booking[] {
+  return bookings.filter((booking) => {
+    return new Date(booking.toDate).getTime() >= today.getTime();
+  });
+}
+
+export function selectionContainsBooking(
+  day: Date,
+  previousSelectedDate: Date,
+  bookings: Booking[],
+): [boolean, Booking | undefined, Booking | undefined] {
+  let returnBool = false;
+  let firstBooking: Booking | undefined;
+  let lastBooking: Booking | undefined;
+
+  let selectedDateFirst = day;
+  let selectedDateLast = previousSelectedDate;
+  if (isBefore(selectedDateLast, selectedDateFirst)) {
+    selectedDateFirst = previousSelectedDate;
+    selectedDateLast = day;
+  }
+
+  const futureBookings = filterOutPastBookings(bookings);
+
+  futureBookings.forEach((booking) => {
+    if (
+      isWithinInterval(booking.fromDate, {
+        start: selectedDateFirst.setHours(0, 0, 0, 0),
+        end: selectedDateLast.setHours(0, 0, 0, 0),
+      }) ||
+      isWithinInterval(booking.toDate, {
+        start: selectedDateFirst.setHours(0, 0, 0, 0),
+        end: selectedDateLast.setHours(0, 0, 0, 0),
+      })
+    ) {
+      returnBool = true;
+      if (!firstBooking) {
+        firstBooking = booking;
+      }
+      lastBooking = booking;
+    }
+  });
+
+  return [returnBool, firstBooking, lastBooking];
 }
