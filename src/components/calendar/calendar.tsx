@@ -19,7 +19,7 @@ import React, { useState } from "react";
 
 import {
   getCellStyles,
-  getDayBooking,
+  getBookingForDay,
   getSelectedSpanStyles,
   selectionContainsBooking,
 } from "~/lib/calendar/utils";
@@ -172,7 +172,7 @@ export function Calendar({
       for (let i = 0; i < 7; i++) {
         formattedDate = format(day, formatDayNum);
         const cloneDay = day;
-        const dayBooking = getDayBooking(day, bookings);
+        const dayBooking = getBookingForDay(day, bookings);
         days.push(
           <div
             className={cn(

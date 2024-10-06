@@ -6,7 +6,7 @@ import { BookingEditDelete } from "~/components/calendar/booking-edit-delete";
 import { Separator } from "~/components/ui/separator";
 import {
   bookingTypeEnumToString,
-  filterOutPastBookings,
+  filterPastBookings,
 } from "~/lib/calendar/utils";
 import { Booking, formatDisplayBooking } from "~/types";
 
@@ -18,7 +18,7 @@ export async function FutureBookingsList({
   bookings,
 }: FutureBookingsListProps) {
   setDefaultOptions({ locale: nb });
-  const futureBookings = filterOutPastBookings(bookings);
+  const futureBookings = filterPastBookings(bookings);
   const { userId } = auth();
 
   return (

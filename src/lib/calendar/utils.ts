@@ -53,6 +53,55 @@ function isSelected(
   );
 }
 
+export function getBookingForDay(
+  day: Date,
+  bookings: Booking[],
+): Booking | undefined {
+  return bookings.filter((booking) => {
+    return isWithinInterval(day.setHours(0, 0, 0, 0), {
+      start: new Date(booking.fromDate).setHours(0, 0, 0, 0),
+      end: new Date(booking.toDate).setHours(0, 0, 0, 0),
+    });
+  })[0];
+}
+
+export function filterPastBookings(bookings: Booking[]): Booking[] {
+  return bookings.filter((booking) => {
+    return new Date(booking.toDate).getTime() >= today.getTime();
+  });
+}
+
+export function selectionContainsBooking(
+  day: Date,
+  previousSelectedDate: Date,
+  bookings: Booking[],
+): [boolean, Booking | undefined, Booking | undefined] {
+  let selectedDateFirst = day;
+  let selectedDateLast = previousSelectedDate;
+  if (isBefore(selectedDateLast, selectedDateFirst)) {
+    selectedDateFirst = previousSelectedDate;
+    selectedDateLast = day;
+  }
+  const bookingsInSelection = bookings.filter((booking) => {
+    return (
+      isWithinInterval(booking.fromDate, {
+        start: selectedDateFirst.setHours(0, 0, 0, 0),
+        end: selectedDateLast.setHours(0, 0, 0, 0),
+      }) ||
+      isWithinInterval(booking.toDate, {
+        start: selectedDateFirst.setHours(0, 0, 0, 0),
+        end: selectedDateLast.setHours(0, 0, 0, 0),
+      })
+    );
+  });
+
+  return [
+    !!bookingsInSelection[0],
+    bookingsInSelection[0],
+    bookingsInSelection.at(-1),
+  ];
+}
+
 function getSelectedStyle(
   day: Date,
   selectedDateFirst: Date | string,
@@ -86,24 +135,6 @@ function getSelectedStyle(
     }
   }
   return className;
-}
-
-export function getDayBooking(
-  day: Date,
-  bookings: Booking[],
-): Booking | undefined {
-  let returnBooking: Booking | undefined = undefined;
-  bookings.forEach((booking) => {
-    if (isBefore(booking.fromDate, day) && isBefore(day, booking.toDate)) {
-      returnBooking = booking;
-    } else if (
-      isSameDay(booking.toDate, day) ||
-      isSameDay(booking.fromDate, day)
-    ) {
-      returnBooking = booking;
-    }
-  });
-  return returnBooking;
 }
 
 export function getCellStyles(
@@ -174,50 +205,4 @@ export function hasCabinAccess(
   if (!cabinsWithAccess) return false;
 
   return cabinsWithAccess.includes(cabinId);
-}
-
-export function filterOutPastBookings(bookings: Booking[]): Booking[] {
-  return bookings.filter((booking) => {
-    return new Date(booking.toDate).getTime() >= today.getTime();
-  });
-}
-
-export function selectionContainsBooking(
-  day: Date,
-  previousSelectedDate: Date,
-  bookings: Booking[],
-): [boolean, Booking | undefined, Booking | undefined] {
-  let returnBool = false;
-  let firstBooking: Booking | undefined;
-  let lastBooking: Booking | undefined;
-
-  let selectedDateFirst = day;
-  let selectedDateLast = previousSelectedDate;
-  if (isBefore(selectedDateLast, selectedDateFirst)) {
-    selectedDateFirst = previousSelectedDate;
-    selectedDateLast = day;
-  }
-
-  const futureBookings = filterOutPastBookings(bookings);
-
-  futureBookings.forEach((booking) => {
-    if (
-      isWithinInterval(booking.fromDate, {
-        start: selectedDateFirst.setHours(0, 0, 0, 0),
-        end: selectedDateLast.setHours(0, 0, 0, 0),
-      }) ||
-      isWithinInterval(booking.toDate, {
-        start: selectedDateFirst.setHours(0, 0, 0, 0),
-        end: selectedDateLast.setHours(0, 0, 0, 0),
-      })
-    ) {
-      returnBool = true;
-      if (!firstBooking) {
-        firstBooking = booking;
-      }
-      lastBooking = booking;
-    }
-  });
-
-  return [returnBool, firstBooking, lastBooking];
 }
