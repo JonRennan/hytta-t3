@@ -4,8 +4,9 @@ This project is meant to be a private booking calendar for my family's cabin.
 
 ### Planned features:
 - [x] Private bookings: if you want the cabin for yourself
-  - [ ] Block bookings from overlapping
+  - [x] Block bookings from overlapping
   - [ ] Display info about the booking on the calendar
+  - [x] Display bookings in the date picker
   - [ ] Custom booking color per user
   - [x] Edit bookings
   - [x] Delete bookings

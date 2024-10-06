@@ -1,5 +1,4 @@
 import { pgEnum } from "drizzle-orm/pg-core";
-import { z } from "zod";
 
 // Dates
 export const undefinedDate = new Date(0);
@@ -26,35 +25,6 @@ export const bookingTypeEnum = pgEnum("booking_type", [
   "Public",
   "AirBnB",
 ]);
-
-// Zod
-
-export const bookingFormSchema = z
-  .object({
-    bookingType: z.enum(bookingTypeEnum.enumValues, {
-      required_error: "En reservasjonstype er nødvendig",
-    }),
-    fromDate: z
-      .date({
-        required_error: "Velg en fra-dato.",
-      })
-      .min(today, {
-        message: "En reservasjon kan ikke være i fortiden",
-      }),
-    toDate: z.date({
-      required_error: "Velg en til-dato.",
-    }),
-    description: z
-      .string()
-      .max(256, {
-        message: "Beskrivelsen kan ikke være lengre enn 256 karakterer.",
-      })
-      .optional(),
-  })
-  .refine((data) => data.fromDate <= data.toDate, {
-    path: ["toDate"],
-    message: "Til-datoen må være lik eller etter fra-datoen.",
-  });
 
 // Types
 

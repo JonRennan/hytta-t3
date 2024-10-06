@@ -41,13 +41,16 @@ import {
   PERMISSION_ERROR,
   SUCCESS,
 } from "~/errors";
-import { getBookingIntervals } from "~/lib/calendar/utils";
+import {
+  getBookingIntervals,
+  selectionContainsBooking,
+} from "~/lib/calendar/utils";
 
 import { cn } from "~/lib/utils";
 import { createBooking, editBooking } from "~/server/actions";
 import {
   Booking,
-  bookingFormSchema,
+  bookingTypeEnum,
   formatDateString,
   formatDbDate,
   today,
@@ -80,6 +83,46 @@ export function BookingForm({
   const router = useRouter();
 
   const bookingIntervals = getBookingIntervals(bookings, bookingId);
+
+  const bookingFormSchema = z
+    .object({
+      bookingType: z.enum(bookingTypeEnum.enumValues, {
+        required_error: "En reservasjonstype er nødvendig",
+      }),
+      fromDate: z
+        .date({
+          required_error: "Velg en fra-dato.",
+        })
+        .min(today, {
+          message: "En reservasjon kan ikke være i fortiden",
+        }),
+      toDate: z.date({
+        required_error: "Velg en til-dato.",
+      }),
+      description: z
+        .string()
+        .max(256, {
+          message: "Beskrivelsen kan ikke være lengre enn 256 karakterer.",
+        })
+        .optional(),
+    })
+    .refine((data) => data.fromDate <= data.toDate, {
+      path: ["toDate"],
+      message: "Til-datoen må være lik eller etter fra-datoen.",
+    })
+    .refine(
+      (data) => {
+        return !selectionContainsBooking(
+          data.fromDate,
+          data.toDate,
+          bookings,
+        )[0];
+      },
+      {
+        path: ["toDate"],
+        message: "Hytta er allerede reservert i perioden du har valgt.",
+      },
+    );
 
   const form = useForm<z.infer<typeof bookingFormSchema>>({
     resolver: zodResolver(bookingFormSchema),
