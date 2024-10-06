@@ -9,10 +9,7 @@ interface CabinCardProps {
 
 export default function CabinCard({ cabin }: CabinCardProps) {
   return (
-    <div
-      className="flex w-full max-w-sm flex-col items-center gap-1 rounded bg-surface-container p-4"
-      key={cabin.id}
-    >
+    <div className="flex w-full max-w-sm flex-col items-center gap-1 rounded bg-surface-container p-4">
       {cabin.imageLink && (
         <Image
           src={cabin.imageLink}

@@ -13,7 +13,7 @@ export default async function Home() {
       </h1>
       <div className="mt-4 flex flex-wrap gap-4">
         {cabins.map((cabin) => (
-          <CabinCard cabin={cabin} />
+          <CabinCard cabin={cabin} key={cabin.id} />
         ))}
       </div>
     </main>
