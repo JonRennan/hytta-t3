@@ -27,7 +27,7 @@ export default async function Page({ params }: { params: { id: number } }) {
   }
 
   return (
-    <main className="flex w-full flex-col items-center gap-4 sm:p-4 md:px-8">
+    <div className="flex w-full flex-col items-center gap-4 px-1 py-4 sm:px-4 md:px-8">
       <h1 className="text-4xl font-bold uppercase text-primary-container_on">
         {cabin.name}
       </h1>
@@ -37,6 +37,6 @@ export default async function Page({ params }: { params: { id: number } }) {
         userId={user ? user.id : undefined}
       />
       <FutureBookingsList bookings={bookings} />
-    </main>
+    </div>
   );
 }

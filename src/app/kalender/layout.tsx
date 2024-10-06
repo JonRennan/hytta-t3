@@ -5,5 +5,9 @@ export default function KalenderLayout({
   children: React.ReactNode;
   params: { id: number };
 }) {
-  return <section>{children}</section>;
+  return (
+    <>
+      <main> {children}</main>
+    </>
+  );
 }
