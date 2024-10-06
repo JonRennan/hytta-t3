@@ -201,7 +201,7 @@ export function BookingForm({
                 </FormControl>
                 <SelectContent>
                   <SelectItem value="Private">Privat</SelectItem>
-                  <SelectItem value="Public">Åpen</SelectItem>
+                  {/*<SelectItem value="Public">Åpen</SelectItem>*/}
                   <SelectItem value="AirBnB">AirBnB</SelectItem>
                 </SelectContent>
               </Select>
