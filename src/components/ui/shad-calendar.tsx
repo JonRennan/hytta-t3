@@ -58,6 +58,8 @@ function ShadCalendar({
       modifiersClassNames={{
         booked:
           "bg-secondary-container text-secondary-base pointer-events-none rounded-none",
+        current_booking:
+          "bg-tertiary-container hover:bg-tertiary-container hover:opacity-70 text-tertiary hover:text-tertiary rounded-none",
       }}
       components={{
         IconLeft: ({ ...props }) => <ChevronLeft className="h-4 w-4" />,

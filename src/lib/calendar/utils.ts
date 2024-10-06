@@ -27,15 +27,18 @@ function isDisabled(day: Date, viewMonth: Date): boolean {
 
 export function getBookingIntervals(
   bookings: Booking[],
+  excludeBooking?: number,
 ): { from: Date; to: Date }[] {
   const outputArray: { from: Date; to: Date }[] = [];
   const futurBookings = filterPastBookings(bookings);
 
   futurBookings.forEach((booking) => {
-    outputArray.push({
-      from: new Date(booking.fromDate),
-      to: new Date(booking.toDate),
-    });
+    if (booking.id != excludeBooking) {
+      outputArray.push({
+        from: new Date(booking.fromDate),
+        to: new Date(booking.toDate),
+      });
+    }
   });
   return outputArray;
 }

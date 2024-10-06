@@ -79,7 +79,7 @@ export function BookingForm({
   setDefaultOptions({ locale: nb });
   const router = useRouter();
 
-  const bookingIntervals = getBookingIntervals(bookings);
+  const bookingIntervals = getBookingIntervals(bookings, bookingId);
 
   const form = useForm<z.infer<typeof bookingFormSchema>>({
     resolver: zodResolver(bookingFormSchema),
@@ -244,12 +244,16 @@ export function BookingForm({
                   <PopoverContent className="w-auto p-0" align="start">
                     <ShadCalendar
                       mode="single"
+                      defaultMonth={field.value}
                       selected={field.value}
                       onSelect={field.onChange}
                       disabled={(date) => date < today}
                       initialFocus
                       modifiers={{
                         booked: bookingIntervals,
+                        current_booking: bookingId
+                          ? { from: selectedDateFrom, to: selectedDateTo }
+                          : [],
                       }}
                     />
                   </PopoverContent>
@@ -288,12 +292,16 @@ export function BookingForm({
                   <PopoverContent className="w-auto p-0" align="start">
                     <ShadCalendar
                       mode="single"
+                      defaultMonth={field.value}
                       selected={field.value}
                       onSelect={field.onChange}
                       disabled={(date) => date < today}
                       initialFocus
                       modifiers={{
                         booked: bookingIntervals,
+                        current_booking: bookingId
+                          ? { from: selectedDateFrom, to: selectedDateTo }
+                          : [],
                       }}
                     />
                   </PopoverContent>
