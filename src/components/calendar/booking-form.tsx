@@ -112,11 +112,15 @@ export function BookingForm({
     })
     .refine(
       (data) => {
-        return !selectionContainsBooking(
+        let selection = selectionContainsBooking(
           data.fromDate,
           data.toDate,
           bookings,
-        )[0];
+        );
+        if (selection[0]) {
+          return selection[1]!.id == bookingId;
+        }
+        return true;
       },
       {
         path: ["toDate"],
