@@ -55,6 +55,10 @@ function ShadCalendar({
         day_hidden: "invisible",
         ...classNames,
       }}
+      modifiersClassNames={{
+        booked:
+          "bg-secondary-container text-secondary-base pointer-events-none rounded-none",
+      }}
       components={{
         IconLeft: ({ ...props }) => <ChevronLeft className="h-4 w-4" />,
         IconRight: ({ ...props }) => <ChevronRight className="h-4 w-4" />,

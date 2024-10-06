@@ -25,6 +25,21 @@ function isDisabled(day: Date, viewMonth: Date): boolean {
   return !isSameMonth(day, viewMonth) || isPast(day.setHours(23, 59, 59, 999));
 }
 
+export function getBookingIntervals(
+  bookings: Booking[],
+): { from: Date; to: Date }[] {
+  const outputArray: { from: Date; to: Date }[] = [];
+  const futurBookings = filterPastBookings(bookings);
+
+  futurBookings.forEach((booking) => {
+    outputArray.push({
+      from: new Date(booking.fromDate),
+      to: new Date(booking.toDate),
+    });
+  });
+  return outputArray;
+}
+
 function isSelected(
   day: Date,
   selectedDateFirst: Date,

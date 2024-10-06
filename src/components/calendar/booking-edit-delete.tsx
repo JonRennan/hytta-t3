@@ -26,9 +26,13 @@ import { Booking } from "~/types";
 
 interface BookingEditDeleteProps {
   booking: Booking;
+  bookings: Booking[];
 }
 
-export function BookingEditDelete({ booking }: BookingEditDeleteProps) {
+export function BookingEditDelete({
+  booking,
+  bookings,
+}: BookingEditDeleteProps) {
   const router = useRouter();
   const [open, setOpen] = useState<boolean>(false);
 
@@ -85,6 +89,7 @@ export function BookingEditDelete({ booking }: BookingEditDeleteProps) {
               prevDescription={booking.description ? booking.description : ""}
               inDialog={true}
               setOpen={setOpen}
+              bookings={bookings}
             />
           </div>
         </DialogContent>

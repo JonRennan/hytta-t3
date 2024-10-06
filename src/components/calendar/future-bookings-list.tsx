@@ -40,7 +40,9 @@ export async function FutureBookingsList({
               {format(booking.fromDate, formatDisplayBooking)} -{" "}
               {format(booking.toDate, formatDisplayBooking)}
             </div>
-            {booking.byId == userId && <BookingEditDelete booking={booking} />}
+            {booking.byId == userId && (
+              <BookingEditDelete booking={booking} bookings={bookings} />
+            )}
             <Separator className="bg-surface-on" />
             <div className="self-center">{booking.description}</div>
           </div>

@@ -41,10 +41,12 @@ import {
   PERMISSION_ERROR,
   SUCCESS,
 } from "~/errors";
+import { getBookingIntervals } from "~/lib/calendar/utils";
 
 import { cn } from "~/lib/utils";
 import { createBooking, editBooking } from "~/server/actions";
 import {
+  Booking,
   bookingFormSchema,
   formatDateString,
   formatDbDate,
@@ -60,6 +62,7 @@ interface BookingFormProps {
   prevDescription?: string;
   inDialog: boolean;
   setOpen?: React.Dispatch<React.SetStateAction<boolean>>;
+  bookings: Booking[];
 }
 
 export function BookingForm({
@@ -71,9 +74,12 @@ export function BookingForm({
   prevDescription,
   inDialog = false,
   setOpen,
+  bookings,
 }: BookingFormProps) {
   setDefaultOptions({ locale: nb });
   const router = useRouter();
+
+  const bookingIntervals = getBookingIntervals(bookings);
 
   const form = useForm<z.infer<typeof bookingFormSchema>>({
     resolver: zodResolver(bookingFormSchema),
@@ -242,6 +248,9 @@ export function BookingForm({
                       onSelect={field.onChange}
                       disabled={(date) => date < today}
                       initialFocus
+                      modifiers={{
+                        booked: bookingIntervals,
+                      }}
                     />
                   </PopoverContent>
                 </Popover>
@@ -283,6 +292,9 @@ export function BookingForm({
                       onSelect={field.onChange}
                       disabled={(date) => date < today}
                       initialFocus
+                      modifiers={{
+                        booked: bookingIntervals,
+                      }}
                     />
                   </PopoverContent>
                 </Popover>

@@ -68,6 +68,7 @@ export default function CalendarWFormModal({
                   inDialog={true}
                   setOpen={setOpen}
                   cabinId={cabin.id}
+                  bookings={bookings}
                 />
               </div>
             </DialogContent>
