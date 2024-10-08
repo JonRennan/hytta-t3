@@ -1,3 +1,4 @@
+import { MapPinIcon } from "lucide-react";
 import Link from "next/link";
 import { Button } from "~/components/ui/button";
 import { Cabin } from "~/types";
@@ -23,8 +24,8 @@ export default function CabinCard({ cabin }: CabinCardProps) {
       <p>{cabin.description}</p>
       {cabin.gmapsLink ? (
         <Button variant="link" className="max-w-64">
-          <Link href={cabin.gmapsLink} target="_blank">
-            {cabin.address}
+          <Link href={cabin.gmapsLink} target="_blank" className="flex gap-1">
+            {cabin.address} <MapPinIcon className="mt-[-.25em]" />
           </Link>
         </Button>
       ) : (
