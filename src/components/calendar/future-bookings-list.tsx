@@ -8,6 +8,7 @@ import {
   bookingTypeEnumToString,
   filterPastBookings,
 } from "~/lib/calendar/utils";
+import { cn } from "~/lib/utils";
 import { Booking, formatDisplayBooking } from "~/types";
 
 interface FutureBookingsListProps {
@@ -22,7 +23,7 @@ export async function FutureBookingsList({
   const { userId } = auth();
 
   return (
-    <div className="mx-auto mt-8 w-full max-w-screen-lg rounded-md bg-surface-container p-6">
+    <div className="mx-auto mt-4 w-full max-w-screen-lg rounded-md bg-surface-container_lowest p-6">
       <h2 className="pb-4 text-center text-3xl text-primary-base">
         Kommende reservasjoner
       </h2>
@@ -30,21 +31,36 @@ export async function FutureBookingsList({
         {futureBookings.map((booking) => (
           <div
             key={booking.id}
-            className="flex min-h-12 flex-wrap gap-2 rounded-md bg-surface-container_high p-2"
+            className={cn(
+              "grid min-h-12 w-full grid-cols-[1fr_3em] grid-rows-1 gap-1 rounded-md p-2",
+              booking.byId == userId
+                ? "grid-cols-[1fr_3em] bg-surface-container_highest"
+                : "grid-cols-[1fr] bg-surface-container",
+            )}
           >
-            <div className="self-center">
-              {bookingTypeEnumToString(booking.bookingType)}
-            </div>
-            <Separator orientation="vertical" className="bg-surface-on" />
-            <div className="self-center">
-              {format(booking.fromDate, formatDisplayBooking)} -{" "}
-              {format(booking.toDate, formatDisplayBooking)}
+            <div className="flex flex-col justify-start gap-2">
+              <div className="grid w-full auto-cols-auto gap-x-2 gap-y-1">
+                <div className="col-span-1 row-start-1 row-end-1 self-center">
+                  {bookingTypeEnumToString(booking.bookingType)}
+                </div>
+                <Separator
+                  orientation="vertical"
+                  className="col-span-1 row-start-1 row-end-1 bg-surface-on"
+                />
+                <div className="col-span-1 row-start-1 row-end-1 self-center">
+                  {format(booking.fromDate, formatDisplayBooking)} -{" "}
+                  {format(booking.toDate, formatDisplayBooking)}
+                </div>
+                <Separator className="col-span-4 row-start-2 row-end-2 min-w-full bg-surface-on" />
+                <p className="col-span-4 row-start-3 row-end-3 text-sm italic">
+                  {booking.byName}
+                </p>
+              </div>
+              <p>{booking.description}</p>
             </div>
             {booking.byId == userId && (
               <BookingEditDelete booking={booking} bookings={bookings} />
             )}
-            <Separator className="bg-surface-on" />
-            <div className="self-center">{booking.description}</div>
           </div>
         ))}
       </div>

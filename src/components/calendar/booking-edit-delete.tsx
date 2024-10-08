@@ -68,39 +68,41 @@ export function BookingEditDelete({
     }
   }
   return (
-    <>
+    <div className="flex gap-2">
       <Separator orientation="vertical" className="bg-surface-on" />
-      <Dialog open={open} onOpenChange={setOpen}>
-        <DialogTrigger asChild>
-          <Button size="icon">
-            <PencilIcon />
-          </Button>
-        </DialogTrigger>
-        <DialogContent className="sm:max-w-[425px]">
-          <DialogHeader>
-            <DialogTitle>Endre reservasjon</DialogTitle>
-          </DialogHeader>
-          <div className="grid gap-4 py-4">
-            <BookingForm
-              selectedDateFrom={new Date(booking.fromDate)}
-              selectedDateTo={new Date(booking.toDate)}
-              bookingId={booking.id}
-              prevBookingType={booking.bookingType}
-              prevDescription={booking.description ? booking.description : ""}
-              inDialog={true}
-              setOpen={setOpen}
-              bookings={bookings}
-            />
-          </div>
-        </DialogContent>
-      </Dialog>
-      <Button
-        variant="destructive"
-        size="icon"
-        onClick={() => onClickDeleteButton()}
-      >
-        <Trash2Icon />
-      </Button>
-    </>
+      <div className="flex flex-col gap-4">
+        <Dialog open={open} onOpenChange={setOpen}>
+          <DialogTrigger asChild>
+            <Button size="icon">
+              <PencilIcon />
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-[425px]">
+            <DialogHeader>
+              <DialogTitle>Endre reservasjon</DialogTitle>
+            </DialogHeader>
+            <div className="grid gap-4 py-4">
+              <BookingForm
+                selectedDateFrom={new Date(booking.fromDate)}
+                selectedDateTo={new Date(booking.toDate)}
+                bookingId={booking.id}
+                prevBookingType={booking.bookingType}
+                prevDescription={booking.description ? booking.description : ""}
+                inDialog={true}
+                setOpen={setOpen}
+                bookings={bookings}
+              />
+            </div>
+          </DialogContent>
+        </Dialog>
+        <Button
+          variant="destructive"
+          size="icon"
+          onClick={() => onClickDeleteButton()}
+        >
+          <Trash2Icon />
+        </Button>
+      </div>
+    </div>
   );
 }

@@ -37,7 +37,7 @@ export async function createBooking(
       await db.insert(bookings).values({
         cabinId: cabinId,
         byId: "Anonymous",
-        byName: "Anonymous",
+        byName: "Anonym",
         bookingType: bookingType,
         fromDate: fromDate,
         toDate: toDate,
