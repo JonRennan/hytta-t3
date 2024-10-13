@@ -103,7 +103,7 @@ export function Calendar({
 
   const renderMonthHeader = () => {
     return (
-      <div className="flex justify-between bg-primary-container py-2 text-center text-2xl font-bold uppercase text-primary-container_on md:text-3xl">
+      <div className="flex items-center justify-between bg-primary-container py-2 text-center text-2xl font-bold uppercase text-primary-container_on md:text-3xl">
         <div
           className="duration-250 mx-5 min-w-max cursor-pointer transition-transform ease-out hover:scale-150"
           onClick={prevMonth}
@@ -163,7 +163,7 @@ export function Calendar({
       weekNumber = getWeek(day);
       days.push(
         <div
-          className="pt-4 text-left text-xs [line-height:0.5rem] [text-orientation:upright] [writing-mode:vertical-lr] md:text-center md:text-base md:[line-height:normal] md:[writing-mode:horizontal-tb]"
+          className="text-center text-xs font-bold [line-height:0.5rem] [text-orientation:upright] [writing-mode:vertical-lr] md:pt-4 md:text-base md:[line-height:normal] md:[writing-mode:horizontal-tb]"
           key={weekNumber}
         >
           {weekNumber}
