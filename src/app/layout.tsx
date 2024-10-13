@@ -16,13 +16,19 @@ import Link from "next/link";
 export const metadata = {
   title: "Hytta",
   description: "En liten privat side for å booke hytta på fjellet",
-  icons: [{ rel: "icon", url: "/favicon.ico" }],
+  icons: [
+    { rel: "icon", url: "/favicon.ico" },
+    { rel: "icon", sizes: "16x16", url: "/favicon-16x16.png" },
+    { rel: "icon", sizes: "32x32", url: "/favicon-32x32.png" },
+    { rel: "apple-touch-icon", sizes: "180x180", url: "/apple-touch-icon.png" },
+    { rel: "manifest", url: "/site.webmanifest" },
+  ],
 };
 
 function TopNav() {
   return (
-    <nav className="flex w-full items-center justify-around bg-surface-bright py-3">
-      <Link href="/">Hjem</Link>
+    <nav className="flex w-full items-center justify-around bg-surface-bright py-1">
+      <Link href="/">Hytter</Link>
       <div className="flex items-center gap-4">
         <ModeToggle />
         <SignedOut>

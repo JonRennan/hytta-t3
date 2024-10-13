@@ -103,7 +103,7 @@ export function Calendar({
 
   const renderMonthHeader = () => {
     return (
-      <div className="flex justify-between bg-primary-container text-center text-xl font-bold uppercase text-primary-container_on md:text-3xl">
+      <div className="flex justify-between bg-primary-container py-2 text-center text-2xl font-bold uppercase text-primary-container_on md:text-3xl">
         <div
           className="duration-250 mx-5 min-w-max cursor-pointer transition-transform ease-out hover:scale-150"
           onClick={prevMonth}

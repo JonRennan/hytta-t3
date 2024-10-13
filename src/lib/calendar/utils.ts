@@ -147,9 +147,15 @@ export function getCellStyles(
   booking?: Booking,
   userId?: string | null,
 ): string {
+  let todayStyle = "";
+  if (isSameDay(cellDay, today)) {
+    todayStyle =
+      "ring-4 ring-surface-on_variant z-50 ring-inset ring-opacity-100";
+  }
   if (booking) {
     return cn(
       "pointer-events-none",
+      todayStyle,
       getSelectedStyle(
         cellDay,
         booking.fromDate,
@@ -157,22 +163,31 @@ export function getCellStyles(
         booking,
         userId,
       ),
-      "",
     );
   } else if (isSelected(cellDay, selectedDates[0]!, selectedDates[1]!)) {
     return cn(
       "cursor-pointer bg-primary-container",
+      todayStyle,
       getSelectedStyle(cellDay, selectedDates[0]!, selectedDates[1]!),
     );
   } else if (
     !isSameMonth(cellDay, viewMonth) &&
     !isPast(cellDay.setHours(23, 59, 59, 999))
   ) {
-    return "cursor-pointer text-surface-on_variant rounded-sm md:rounded-md bg-surface-container hover:bg-surface-container m-0.5 md:m-1";
+    return cn(
+      "cursor-pointer text-surface-on_variant rounded-sm md:rounded-md bg-surface-container hover:bg-surface-container m-0.5 md:m-1",
+      todayStyle,
+    );
   } else if (isPast(cellDay.setHours(23, 59, 59, 999))) {
-    return "text-surface-container_highest rounded-sm md:rounded-md bg-surface-container_low pointer-events-none m-0.5 md:m-1";
+    return cn(
+      "text-surface-container_highest rounded-sm md:rounded-md bg-surface-container_low pointer-events-none m-0.5 md:m-1",
+      todayStyle,
+    );
   } else {
-    return "cursor-pointer bg-surface-container_highest rounded-sm md:rounded-md hover:bg-surface-container_high m-0.5 md:m-1";
+    return cn(
+      "cursor-pointer bg-surface-container_highest rounded-sm md:rounded-md hover:bg-surface-container_high m-0.5 md:m-1",
+      todayStyle,
+    );
   }
 }
 

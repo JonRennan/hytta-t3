@@ -23,7 +23,7 @@ export async function FutureBookingsList({
   const { userId } = auth();
 
   return (
-    <div className="mx-auto mt-4 w-full max-w-screen-lg rounded-md bg-surface-container_lowest p-6">
+    <div className="mx-auto mt-2 w-full max-w-screen-lg rounded-md bg-surface-container_lowest p-6">
       <h2 className="pb-4 text-center text-3xl text-primary-base">
         Kommende reservasjoner
       </h2>
