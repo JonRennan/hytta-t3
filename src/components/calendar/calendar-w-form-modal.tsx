@@ -42,7 +42,7 @@ export default function CalendarWFormModal({
         {userId || cabin.isPubliclyWriteable ? (
           <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-              <Button variant={"outline"}>Reserver {cabin.name}</Button>
+              <Button variant={"secondary"}>Reserver {cabin.name}</Button>
             </DialogTrigger>
             <DialogContent className="sm:max-w-[425px]">
               <DialogHeader>

@@ -273,7 +273,7 @@ export function BookingForm({
                   <PopoverTrigger asChild>
                     <FormControl>
                       <Button
-                        variant={"outline"}
+                        variant={"secondary"}
                         className={cn(
                           "w-full pl-3 text-left font-normal",
                           !field.value && "text-muted-foreground",
@@ -321,7 +321,7 @@ export function BookingForm({
                   <PopoverTrigger asChild>
                     <FormControl>
                       <Button
-                        variant={"outline"}
+                        variant={"secondary"}
                         className={cn(
                           "w-full pl-3 text-left font-normal",
                           !field.value && "text-muted-foreground",
@@ -377,12 +377,12 @@ export function BookingForm({
         />
         {inDialog ? (
           <DialogFooter>
-            <Button variant={"outline"} type="submit" className="m-auto">
+            <Button variant={"secondary"} type="submit" className="m-auto">
               Reserver
             </Button>
           </DialogFooter>
         ) : (
-          <Button variant={"outline"} type="submit" className="m-auto">
+          <Button variant={"secondary"} type="submit" className="m-auto">
             Reserver
           </Button>
         )}

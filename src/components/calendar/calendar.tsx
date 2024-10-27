@@ -103,7 +103,7 @@ export function Calendar({
 
   const renderMonthHeader = () => {
     return (
-      <div className="flex items-center justify-between bg-primary-container py-2 text-center text-2xl font-bold uppercase text-primary-container_on md:text-3xl">
+      <div className="flex items-center justify-between rounded-t bg-primary-container py-2 text-center text-2xl font-bold uppercase text-primary-container_on md:text-3xl">
         <div
           className="duration-250 mx-5 min-w-max cursor-pointer transition-transform ease-out hover:scale-150"
           onClick={prevMonth}
@@ -146,7 +146,7 @@ export function Calendar({
     }
 
     return (
-      <div className="grid grid-cols-[.5em_1fr_1fr_1fr_1fr_1fr_1fr_1fr] pt-1 uppercase md:grid-cols-[1.5em_1fr_1fr_1fr_1fr_1fr_1fr_1fr]">
+      <div className="grid grid-cols-[.75em_1fr_1fr_1fr_1fr_1fr_1fr_1fr] pt-1 uppercase md:grid-cols-[1.5em_1fr_1fr_1fr_1fr_1fr_1fr_1fr]">
         {days}
       </div>
     );
@@ -163,7 +163,7 @@ export function Calendar({
       weekNumber = getWeek(day);
       days.push(
         <div
-          className="text-center text-xs font-bold [line-height:0.5rem] [text-orientation:upright] [writing-mode:vertical-lr] md:pt-4 md:text-base md:[line-height:normal] md:[writing-mode:horizontal-tb]"
+          className="justify-self-center text-center text-xs font-bold [line-height:0.5rem] [text-orientation:upright] [writing-mode:vertical-lr] md:pt-4 md:text-base md:[line-height:normal] md:[writing-mode:horizontal-tb]"
           key={weekNumber}
         >
           {weekNumber}
@@ -210,14 +210,14 @@ export function Calendar({
       }
     }
     return (
-      <div className="grid auto-rows-[4rem] grid-cols-[.75em_1fr_1fr_1fr_1fr_1fr_1fr_1fr] justify-items-stretch bg-surface-container_lowest py-1 uppercase md:auto-rows-[6rem] md:grid-cols-[1.5em_1fr_1fr_1fr_1fr_1fr_1fr_1fr]">
+      <div className="grid auto-rows-[4rem] grid-cols-[.75em_1fr_1fr_1fr_1fr_1fr_1fr_1fr] justify-items-stretch pt-1 uppercase md:auto-rows-[6rem] md:grid-cols-[1.5em_1fr_1fr_1fr_1fr_1fr_1fr_1fr]">
         {days}
       </div>
     );
   };
 
   return (
-    <div className="w-full max-w-screen-lg bg-surface-container_lowest object-center">
+    <div className="w-full max-w-screen-lg rounded-b bg-surface-container_lowest object-center">
       {renderMonthHeader()}
       {renderWeekdays()}
       {renderDayCells()}
