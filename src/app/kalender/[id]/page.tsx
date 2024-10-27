@@ -48,7 +48,7 @@ export default async function Page({ params }: { params: { id: number } }) {
           </h1>
           <p className="text-center">{cabin.description}</p>
           {cabin.gmapsLink ? (
-            <Button variant="link" className="w-fit">
+            <Button variant="link" asChild>
               <Link
                 href={cabin.gmapsLink}
                 target="_blank"

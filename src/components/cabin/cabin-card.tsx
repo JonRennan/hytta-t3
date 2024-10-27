@@ -22,14 +22,12 @@ export default function CabinCard({ cabin }: CabinCardProps) {
           />
         </Link>
       )}
-      <Button variant="link">
-        <Link href={`/kalender/${cabin.id}`}>
-          <h1 className="text-2xl font-bold uppercase">{cabin.name}</h1>
-        </Link>{" "}
+      <Button variant="link" className="text-2xl font-bold uppercase" asChild>
+        <Link href={`/kalender/${cabin.id}`}>{cabin.name}</Link>
       </Button>
       <p>{cabin.description}</p>
       {cabin.gmapsLink ? (
-        <Button variant="link" className="max-w-64">
+        <Button variant="link" asChild>
           <Link href={cabin.gmapsLink} target="_blank" className="flex gap-1">
             {cabin.address} <MapPinIcon className="mt-[-.25em]" />
           </Link>
@@ -37,7 +35,7 @@ export default function CabinCard({ cabin }: CabinCardProps) {
       ) : (
         <p>{cabin.address}</p>
       )}
-      <Button variant="link">
+      <Button variant="link" asChild>
         <Link href={`/kalender/${cabin.id}`}>Se kalender -{">"}</Link>
       </Button>
     </div>
