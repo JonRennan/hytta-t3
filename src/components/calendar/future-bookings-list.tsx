@@ -40,28 +40,68 @@ export async function FutureBookingsList({
           >
             <div className="flex flex-col justify-start gap-2">
               <div className="grid w-full grid-cols-[4em_1em_4em_1em_1fr] gap-y-1">
-                <div className="col-span-1 row-start-1 row-end-1 self-center">
+                <div
+                  className={cn(
+                    "col-span-1 row-start-1 row-end-1",
+                    booking.bookingType == "AirBnB"
+                      ? "text-airbnb-container dark:text-airbnb"
+                      : "",
+                  )}
+                >
                   {bookingTypeEnumToString(booking.bookingType)}
                 </div>
                 <Separator
                   orientation="vertical"
-                  className="col-span-1 row-start-1 row-end-1 bg-surface-on"
+                  className={cn(
+                    "col-span-1 row-start-1 row-end-1",
+                    booking.bookingType == "AirBnB"
+                      ? "bg-airbnb-container dark:bg-airbnb"
+                      : "bg-surface-on",
+                  )}
                 />
-                <div className="col-span-1 row-start-1 row-end-1 self-center">
+                <div
+                  className={cn(
+                    "col-span-1 row-start-1 row-end-1",
+                    booking.bookingType == "AirBnB"
+                      ? "text-airbnb-container dark:text-airbnb"
+                      : "",
+                  )}
+                >
                   Uke {getWeek(booking.fromDate)}
                 </div>
                 <Separator
                   orientation="vertical"
-                  className="col-span-1 row-start-1 row-end-1 bg-surface-on"
+                  className={cn(
+                    "col-span-1 row-start-1 row-end-1",
+                    booking.bookingType == "AirBnB"
+                      ? "bg-airbnb-container dark:bg-airbnb"
+                      : "bg-surface-on",
+                  )}
                 />
-                <div className="col-span-1 row-start-1 row-end-1 self-center">
+                <div
+                  className={cn(
+                    "col-span-1 row-start-1 row-end-1",
+                    booking.bookingType == "AirBnB"
+                      ? "text-airbnb-container dark:text-airbnb"
+                      : "",
+                  )}
+                >
                   {format(booking.fromDate, formatDisplayBooking)} -{" "}
                   {format(booking.toDate, formatDisplayBooking)}
                 </div>
-                <Separator className="col-span-5 row-start-2 row-end-2 min-w-full bg-surface-on" />
-                <p className="col-span-5 row-start-3 row-end-3 text-sm italic">
-                  {booking.byName}
-                </p>
+                <Separator
+                  className={cn(
+                    "col-span-5 row-start-2 row-end-2 min-w-full",
+                    booking.bookingType == "AirBnB"
+                      ? "bg-airbnb-container dark:bg-airbnb"
+                      : "bg-surface-on",
+                  )}
+                />
+                {booking.bookingType != "AirBnB" && (
+                  <p className="col-span-5 row-start-3 row-end-3 text-sm italic">
+                    {booking.byName}
+                  </p>
+                )}
               </div>
               <p>{booking.description}</p>
             </div>

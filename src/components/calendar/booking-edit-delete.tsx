@@ -21,6 +21,7 @@ import {
   PERMISSION_ERROR,
   SUCCESS,
 } from "~/errors";
+import { cn } from "~/lib/utils";
 import { deleteBooking } from "~/server/actions";
 import { Booking } from "~/types";
 
@@ -69,7 +70,15 @@ export function BookingEditDelete({
   }
   return (
     <div className="flex gap-2">
-      <Separator orientation="vertical" className="bg-surface-on" />
+      <Separator
+        orientation="vertical"
+        className={cn(
+          "bg-surface-on",
+          booking.bookingType == "AirBnB"
+            ? "bg-airbnb-container dark:bg-airbnb"
+            : "bg-surface-on",
+        )}
+      />
       <div className="flex flex-col gap-4">
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>
