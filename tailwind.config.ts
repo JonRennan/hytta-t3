@@ -21,37 +21,31 @@ export default {
         primary: {
           DEFAULT: "hsl(var(--primary))", //shadcn
           foreground: "hsl(var(--primary-foreground))", //shadcn
-
           base: "var(--color-primary)",
           on: "var(--color-on-primary)",
           container: "var(--color-primary-container)",
           container_on: "var(--color-on-primary-container)",
         },
-
         secondary: {
           DEFAULT: "hsl(var(--secondary))", //shadcn
           foreground: "hsl(var(--secondary-foreground))", //shadcn
-
           base: "var(--color-secondary)",
           on: "var(--color-on-secondary)",
           container: "var(--color-secondary-container)",
           container_on: "var(--color-on-secondary-container)",
         },
-
         tertiary: {
           DEFAULT: "var(--color-tertiary)",
           on: "var(--color-on-tertiary)",
           container: "var(--color-tertiary-container)",
           container_on: "var(--color-on-tertiary-container)",
         },
-
         error: {
           DEFAULT: "var(--color-error)",
           on: "var(--color-on-error)",
           container: "var(--color-error-container)",
           container_on: "var(--color-on-error-container)",
         },
-
         surface: {
           DEFAULT: "var(--color-surface)",
           dim: "var(--color-surface-dim)",
@@ -64,12 +58,10 @@ export default {
           on: "var(--color-on-surface)",
           on_variant: "var(--color-on-surface-variant)",
         },
-
         outline: {
           DEFAULT: "var(--color-outline)",
           variant: "var(--color-outline-variant)",
         },
-
         airbnb: {
           DEFAULT: "var(--color-airbnb)",
           container: "var(--color-airbnb-container)",
@@ -102,6 +94,16 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        sidebar: {
+          DEFAULT: "hsl(var(--sidebar-background))",
+          foreground: "hsl(var(--sidebar-foreground))",
+          primary: "hsl(var(--sidebar-primary))",
+          "primary-foreground": "hsl(var(--sidebar-primary-foreground))",
+          accent: "hsl(var(--sidebar-accent))",
+          "accent-foreground": "hsl(var(--sidebar-accent-foreground))",
+          border: "hsl(var(--sidebar-border))",
+          ring: "hsl(var(--sidebar-ring))",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -110,12 +112,20 @@ export default {
       },
       keyframes: {
         "accordion-down": {
-          from: { height: "0" },
-          to: { height: "var(--radix-accordion-content-height)" },
+          from: {
+            height: "0",
+          },
+          to: {
+            height: "var(--radix-accordion-content-height)",
+          },
         },
         "accordion-up": {
-          from: { height: "var(--radix-accordion-content-height)" },
-          to: { height: "0" },
+          from: {
+            height: "var(--radix-accordion-content-height)",
+          },
+          to: {
+            height: "0",
+          },
         },
       },
       animation: {
