@@ -131,7 +131,7 @@ function getSelectedStyle(
   if (booking) {
     if (booking.bookingType == "AirBnB") {
       className += " bg-airbnb";
-    } else if (userId && booking.byId == userId) {
+    } else if (userId && booking.userId == userId) {
       className += " bg-tertiary-container";
     } else {
       className += " bg-secondary-container";
@@ -201,7 +201,7 @@ export function getSelectedSpanStyles(
     let className = "h-2 w-full absolute top-0 left-0";
     if (booking.bookingType === "AirBnB") {
       return className + " bg-airbnb-container";
-    } else if (userId && booking.byId === userId) {
+    } else if (userId && booking.userId === userId) {
       return className + " bg-tertiary";
     }
     return className + " bg-secondary-base";

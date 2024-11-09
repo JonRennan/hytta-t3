@@ -33,7 +33,7 @@ export async function FutureBookingsList({
             key={booking.id}
             className={cn(
               "grid min-h-12 w-full grid-cols-[1fr_3em] grid-rows-1 gap-1 rounded-md p-2",
-              booking.byId == userId
+              booking.userId == userId
                 ? "grid-cols-[1fr_3em] bg-surface-container_highest"
                 : "grid-cols-[1fr] bg-surface-container",
             )}
@@ -99,13 +99,13 @@ export async function FutureBookingsList({
                 />
                 {booking.bookingType != "AirBnB" && (
                   <p className="col-span-5 row-start-3 row-end-3 text-sm italic">
-                    {booking.byName}
+                    {booking.userName}
                   </p>
                 )}
               </div>
               <p>{booking.description}</p>
             </div>
-            {booking.byId == userId && (
+            {booking.userId == userId && (
               <BookingEditDelete booking={booking} bookings={bookings} />
             )}
           </div>

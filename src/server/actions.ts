@@ -36,8 +36,8 @@ export async function createBooking(
     if (cabin.isPubliclyWriteable) {
       await db.insert(bookings).values({
         cabinId: cabinId,
-        byId: "Anonymous",
-        byName: "Anonym",
+        userId: "Anonymous",
+        userName: "Anonym",
         bookingType: bookingType,
         fromDate: fromDate,
         toDate: toDate,
@@ -56,8 +56,8 @@ export async function createBooking(
 
   await db.insert(bookings).values({
     cabinId: cabinId,
-    byId: user.id,
-    byName: user.fullName,
+    userId: user.id,
+    userName: user.fullName,
     bookingType: bookingType,
     fromDate: fromDate,
     toDate: toDate,
@@ -79,7 +79,7 @@ export async function editBooking(
   if (!bookingId) return NOT_FOUND;
   const booking = await getBookingById(bookingId);
   if (!booking) return NOT_FOUND;
-  if (booking.byId !== userId) return PERMISSION_ERROR;
+  if (booking.userId !== userId) return PERMISSION_ERROR;
 
   await db
     .update(bookings)
@@ -100,7 +100,7 @@ export async function deleteBooking(bookingId: number) {
 
   const booking = await getBookingById(bookingId);
   if (!booking) return NOT_FOUND;
-  if (booking.byId !== userId) return PERMISSION_ERROR;
+  if (booking.userId !== userId) return PERMISSION_ERROR;
 
   await db.delete(bookings).where(eq(bookings.id, bookingId));
   return SUCCESS;

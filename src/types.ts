@@ -31,8 +31,8 @@ export const bookingTypeEnum = pgEnum("booking_type", [
 export class Booking {
   id: number;
   cabinId: number | null;
-  byId: string;
-  byName: string | null;
+  userId: string;
+  userName: string | null;
   createdAt: Date | null;
   updatedAt: Date | null;
   bookingType: "Private" | "Public" | "AirBnB";
@@ -43,8 +43,8 @@ export class Booking {
   constructor(
     id: number,
     cabinId: number | null,
-    byId: string,
-    byName: string | null,
+    userId: string,
+    userName: string | null,
     createdAt: Date | null,
     updatedAt: Date | null,
     bookingType: "Private" | "Public" | "AirBnB",
@@ -54,8 +54,8 @@ export class Booking {
   ) {
     this.id = id;
     this.cabinId = cabinId;
-    this.byId = byId;
-    this.byName = byName;
+    this.userId = userId;
+    this.userName = userName;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
     this.bookingType = bookingType;
@@ -67,7 +67,7 @@ export class Booking {
 
 export class Cabin {
   id: number;
-  owner: string;
+  ownerId: string;
   name: string | null;
   createdAt: Date;
   updatedAt: Date;
@@ -80,7 +80,7 @@ export class Cabin {
 
   constructor(
     id: number,
-    owner: string,
+    ownerId: string,
     name: string | null,
     createdAt: Date,
     updatedAt: Date,
@@ -92,7 +92,7 @@ export class Cabin {
     isPubliclyWriteable: boolean,
   ) {
     this.id = id;
-    this.owner = owner;
+    this.ownerId = ownerId;
     this.name = name;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;

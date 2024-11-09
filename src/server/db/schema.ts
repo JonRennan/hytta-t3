@@ -22,38 +22,38 @@ import { bookingTypeEnum } from "~/types";
 export const createTable = pgTableCreator((name) => `hytta-t3_${name}`);
 
 export const bookings = createTable("booking", {
-  id: serial("id").primaryKey(),
-  cabinId: integer("cabin_id")
+  id: serial().primaryKey(),
+  cabinId: integer()
     .references(() => cabins.id)
     .notNull(),
-  byId: varchar("user_id", { length: 32 }).notNull(),
-  byName: varchar("user_name", { length: 64 }),
-  createdAt: timestamp("created_at", { withTimezone: true })
+  userId: varchar({ length: 32 }).notNull(),
+  userName: varchar({ length: 64 }),
+  createdAt: timestamp({ withTimezone: true })
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),
-  updatedAt: timestamp("updated_at", { withTimezone: true })
+  updatedAt: timestamp({ withTimezone: true })
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),
-  bookingType: bookingTypeEnum("type").notNull(),
-  fromDate: date("from_date").notNull(),
-  toDate: date("to_date").notNull(),
-  description: varchar("description", { length: 256 }),
+  bookingType: bookingTypeEnum().notNull(),
+  fromDate: date().notNull(),
+  toDate: date().notNull(),
+  description: varchar({ length: 256 }),
 });
 
 export const cabins = createTable("cabin", {
-  id: serial("id").primaryKey(),
-  owner: varchar("owner_id", { length: 32 }).notNull(),
-  name: varchar("name", { length: 64 }),
-  createdAt: timestamp("created_at", { withTimezone: true })
+  id: serial().primaryKey(),
+  ownerId: varchar({ length: 32 }).notNull(),
+  name: varchar({ length: 64 }),
+  createdAt: timestamp({ withTimezone: true })
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),
-  updatedAt: timestamp("updated_at", { withTimezone: true })
+  updatedAt: timestamp({ withTimezone: true })
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),
-  imageLink: varchar("image_link", { length: 128 }),
-  description: varchar("description", { length: 256 }),
-  address: varchar("address", { length: 64 }),
-  gmapsLink: varchar("gmaps_link", { length: 128 }),
-  isPubliclyViewable: boolean("publicly_viewable").default(false).notNull(),
-  isPubliclyWriteable: boolean("publicly_writeable").default(false).notNull(),
+  imageLink: varchar({ length: 128 }),
+  description: varchar({ length: 256 }),
+  address: varchar({ length: 64 }),
+  gmapsLink: varchar({ length: 128 }),
+  isPubliclyViewable: boolean().default(false).notNull(),
+  isPubliclyWriteable: boolean().default(false).notNull(),
 });

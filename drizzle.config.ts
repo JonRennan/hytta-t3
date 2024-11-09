@@ -9,4 +9,6 @@ export default {
     url: env.POSTGRES_URL,
   },
   tablesFilter: ["hytta-t3_*"],
+  out: "./src/server/db/migrations",
+  casing: "snake_case",
 } satisfies Config;
