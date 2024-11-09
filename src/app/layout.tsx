@@ -53,7 +53,7 @@ export default function RootLayout({
     <ClerkProvider localization={nbNO}>
       <html lang="no">
         <body className={GeistSans.className}>
-          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <ThemeProvider>
             <TopNav />
             {children}
             <Toaster richColors />
