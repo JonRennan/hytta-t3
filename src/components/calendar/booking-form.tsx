@@ -264,7 +264,7 @@ export function BookingForm({
                                             selected={field.value}
                                             onSelect={field.onChange}
                                             disabled={(date) => date < today}
-                                            initialFocus
+                                            autoFocus
                                             modifiers={{
                                                 booked: bookingIntervals,
                                                 current_booking: bookingId
@@ -312,7 +312,7 @@ export function BookingForm({
                                             selected={field.value}
                                             onSelect={field.onChange}
                                             disabled={(date) => date < today}
-                                            initialFocus
+                                            autoFocus
                                             modifiers={{
                                                 booked: bookingIntervals,
                                                 current_booking: bookingId
